@@ -5,14 +5,15 @@ import { LoginComponent } from './features/login.component';
 import { EmployeeDashboardComponent } from './features/employee-dashboard.component';
 import { AdminDashboardComponent } from './features/admin-dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
+import { RoleGuard } from './guards/role.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
-  { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [AuthGuard] },
-  { path: 'employee-dashboard', component: EmployeeDashboardComponent, canActivate: [AuthGuard] },
-  { path: '**', redirectTo: 'login' }
+  { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [AuthGuard, RoleGuard], data:{expectedRole: 'ADMIN'} },
+  { path: 'employee-dashboard', component: EmployeeDashboardComponent, canActivate: [AuthGuard,RoleGuard], data:{expectedRole: 'EMPLOYEE'} },
+  //{ path: '**', redirectTo: 'login' }
 ];
 
 @NgModule({
