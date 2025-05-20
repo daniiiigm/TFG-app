@@ -1,0 +1,21 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2><i class="fas fa-user-circle"></i> Iniciar Sesión</h2>
+
+    <form (ngSubmit)="login()" class="login-form">
+      <div class="input-group">
+        <label for="email"><i class="fas fa-user"></i> Email</label>
+        <input type="text" id="email" [(ngModel)]="email" name="email" placeholder="Introduce tu usuario" required />
+      </div>
+
+      <div class="input-group">
+        <label for="password"><i class="fas fa-lock"></i> Contraseña</label>
+        <input type="password" id="password" [(ngModel)]="password" name="password" placeholder="Introduce tu contraseña" required />
+      </div>
+
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+      <button type="submit" class="login-button"><i class="fas fa-sign-in-alt"></i> Entrar</button>
+    </form>
+  </div>
+</div>
