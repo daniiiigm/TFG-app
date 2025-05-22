@@ -40,4 +40,11 @@ public class RecordController {
         return ResponseEntity.ok(record);
     }
 
+    @Operation(summary = "Register check-out time")
+    @PatchMapping("/all-records/{userId}")
+    public ResponseEntity<List<Record>> getAllRecordsByUser(@PathVariable Long userId) {
+        List<Record> records = recordUseCase.getRecordsByUserId(userId);
+        return ResponseEntity.ok(records);
+    }
+
 }

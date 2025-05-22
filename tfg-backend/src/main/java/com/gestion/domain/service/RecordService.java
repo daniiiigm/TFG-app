@@ -58,4 +58,9 @@ public class RecordService implements RecordUseCase {
         record.setCheckOut(LocalDateTime.now());
         return recordRepositoryPort.registerCheckOut(record);
     }
+
+    @Override
+    public List<Record> getRecordsByUserId(Long userId) {
+        return recordRepositoryPort.getRecordsByUserId(userId);
+    }
 }

@@ -15,33 +15,33 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
   login(email: string, password: string): Observable<any> {
-  return this.http.post<{ token: string, role: string}>('http://localhost:8080/api/auth/login', 
-    { email, password }, 
-    {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      withCredentials: true
-    }
-  ).pipe(
-    tap(response => {
-      localStorage.setItem('token', response.token);
-      localStorage.setItem('role', response.role);
-    }),
-    map(() => {}) // importante: para que next() se dispare sin error
-  );
-}
+    return this.http.post<{ token: string, role: string}>('http://localhost:8080/api/auth/login', 
+      { email, password }, 
+      {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        withCredentials: true
+      }
+    ).pipe(
+      tap(response => {
+        sessionStorage.setItem('token', response.token);
+        sessionStorage.setItem('role', response.role);
+      }),
+      map(() => {}) // importante: para que next() se dispare sin error
+    );
+  }
 
   saveToken(token: string): void {
-    localStorage.setItem('token', token);
+    sessionStorage.setItem('token', token);
     const payload = JSON.parse(atob(token.split('.')[1]));
-    localStorage.setItem('role', payload.role);
+    sessionStorage.setItem('role', payload.role);
   }
 
   getRole(): string | null {
-    return localStorage.getItem('role');
+    return sessionStorage.getItem('role');
   }
 
   getToken(): string | null {
-    return localStorage.getItem('token');
+    return sessionStorage.getItem('token');
   }
 
   isLoggedIn(): boolean {
@@ -59,8 +59,7 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
+    sessionStorage.clear();
     this.router.navigate(['/login']);
   }
 }
