@@ -40,8 +40,8 @@ public class RecordController {
         return ResponseEntity.ok(record);
     }
 
-    @Operation(summary = "Register check-out time")
-    @PatchMapping("/all-records/{userId}")
+    @Operation(summary = "Endpoint to get all records from one user")
+    @GetMapping("/all-records/{userId}")
     public ResponseEntity<List<Record>> getAllRecordsByUser(@PathVariable Long userId) {
         List<Record> records = recordUseCase.getRecordsByUserId(userId);
         return ResponseEntity.ok(records);

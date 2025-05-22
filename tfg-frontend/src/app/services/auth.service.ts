@@ -15,7 +15,7 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
   login(email: string, password: string): Observable<any> {
-    return this.http.post<{ token: string, role: string}>('http://localhost:8080/api/auth/login', 
+    return this.http.post<{ token: string, role: string, userId: number}>('http://localhost:8080/api/auth/login', 
       { email, password }, 
       {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -25,6 +25,7 @@ export class AuthService {
       tap(response => {
         sessionStorage.setItem('token', response.token);
         sessionStorage.setItem('role', response.role);
+        sessionStorage.setItem('userId', response.userId.toString());
       }),
       map(() => {}) // importante: para que next() se dispare sin error
     );
@@ -34,6 +35,7 @@ export class AuthService {
     sessionStorage.setItem('token', token);
     const payload = JSON.parse(atob(token.split('.')[1]));
     sessionStorage.setItem('role', payload.role);
+    sessionStorage.setItem('userId', payload.userId);
   }
 
   getRole(): string | null {
@@ -42,6 +44,11 @@ export class AuthService {
 
   getToken(): string | null {
     return sessionStorage.getItem('token');
+  }
+
+  getUserId(): number | null {
+    const id = sessionStorage.getItem('userId');
+    return id ? Number(id) : null;
   }
 
   isLoggedIn(): boolean {
@@ -61,5 +68,18 @@ export class AuthService {
   logout(): void {
     sessionStorage.clear();
     this.router.navigate(['/login']);
+  }
+
+  getUserIdFromToken(): number | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.userId;
+    } catch (e) {
+      console.error('Error decodificando el token:', e);
+      return null;
+    }
   }
 }

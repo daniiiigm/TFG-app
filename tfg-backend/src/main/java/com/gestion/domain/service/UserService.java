@@ -87,8 +87,8 @@ public class UserService implements UserUseCase{
         if (userOptional.isPresent()){
             User user = userOptional.get();
             if (PasswordEncoderUtil.matchesPassword( authRequest.getPassword(), user.getPassword())){
-                String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
-                return  new LoginResponseDTO(token, user.getRole().name());
+                String token = jwtUtil.generateToken(user.getEmail(), user.getRole(), user.getId());
+                return  new LoginResponseDTO(token, user.getRole().name(), user.getId());
             }
         }
 
