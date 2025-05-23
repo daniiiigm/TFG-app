@@ -1,4 +1,16 @@
-<div class="container-fluid mt-4 px-4">
+<div class="dashboard-container">
+  <aside class="sidebar">
+    <img src="assets/logo.png" alt="Logo de la empresa" class="logo-img" />
+    <button class="btn primary" (click)="fichar()">
+      {{ checkInDone ? 'Check-out' : 'Check-in' }}
+    </button>
+    <a routerLink="/users" class="btn">Ver Empleados</a>
+    <a routerLink="/users" class="btn">Registrar Empleado</a>
+    <a routerLink="/users" class="btn">Modificar rol</a>
+    <a routerLink="/users" class="btn">Justificantes</a>
+  </aside>
+
+  <main class="flex-grow-1 p-4">
   <h2 class="text-center mb-4">Lista de empleados</h2>
 
   <div class="table-responsive shadow rounded">
@@ -6,11 +18,11 @@
       <thead class="table-dark text-center">
         <tr>
           <th>Nombre</th>
-          <th>Apellido</th>
+          <th>Apellido(s)</th>
           <th>Email</th>
           <th>Rol</th>
           <th>Fecha de Creación</th>
-          <th>Acciones</th>
+          <th id="acciones1">Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -19,11 +31,10 @@
           <td>{{ user.surname }}</td>
           <td>{{ user.email }}</td>
           <td>{{ user.role }}</td>
-          <td>{{ user.creationDate | date: 'shortDate' }}</td>
-          <td class="text-center">
-            <button class="btn btn-sm btn-outline-danger" (click)="deleteUser(user.id)">
-              <i class="bi bi-trash"></i> Eliminar
-            </button>
+          <td>{{ user.creationDate}}</td>
+          <td id="acciones" class="text-center">
+            <button id="botonBorrar" class="btn btn-sm btn-outline-danger" (click)="deleteUser(user.id)">Eliminar</button>
+            <button id="botonModificar" class="btn btn-sm btn-outline-primary">Modificar</button>
           </td>
         </tr>
       </tbody>
@@ -46,4 +57,5 @@
       </li>
     </ul>
   </nav>
+  </main>
 </div>
