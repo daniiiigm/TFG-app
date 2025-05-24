@@ -1,20 +1,25 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
-import { RecordService } from '../../services/record.service';
-import { Router } from '@angular/router';
-import { RouterModule } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
-import { AdminSidebarComponent } from '../../components/admin-sidebar.component';
+import { Router, RouterModule } from '@angular/router';
+import { AdminSidebarComponent } from 'src/app/components/admin-sidebar.component';
+import { RecordService } from 'src/app/services/record.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
-    selector: 'app-users',
-    templateUrl: './users.component.html',
-    styleUrl: './user.component.css',
-    standalone: false
+  selector: 'app-update-role',
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule, AdminSidebarComponent],
+  templateUrl: './update-role.component.html',
+  styleUrls: ['./update-role.component.css']
 })
-export class UsersComponent implements OnInit {
+export class UpdateRoleComponent implements OnInit {
   users: User[] = [];
+  successMessage = '';
+  errorMessage = '';
+
   paginatedUsers: User[] = [];
 
   currentPage = 1;
@@ -26,7 +31,7 @@ export class UsersComponent implements OnInit {
   fichajeStatus: string = '';
   checkInDone: boolean = false;
 
-  constructor(private authService: AuthService, private userService: UserService, private router: Router,private recordService: RecordService) {}
+  constructor(private userService: UserService, private recordService: RecordService, private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadUsers();
@@ -47,6 +52,13 @@ export class UsersComponent implements OnInit {
     );
   }
 
+  updateRole(userId: number, newRole: string): void {
+    this.userService.updateUserRole(userId, newRole as 'ADMIN' | 'EMPLOYEE').subscribe({
+      next: () => this.successMessage = `Rol actualizado para el usuario ${userId}.`,
+      error: () => this.errorMessage = 'Error al actualizar el rol.'
+    });
+  }
+
   updatePaginatedUsers(): void {
     const start = (this.currentPage - 1) * this.itemsPerPage;
     const end = start + this.itemsPerPage;
@@ -58,16 +70,6 @@ export class UsersComponent implements OnInit {
       this.currentPage = page;
       this.updatePaginatedUsers();
     }
-  }
-
-  deleteUser(id: number): void {
-    this.userService.deleteUser(id).subscribe(
-      () => {
-        this.loadUsers(); // refresca usuarios y paginación
-        this.currentPage = 1; // opcional: volver a la página 1
-      },
-      error => console.error('Error deleting user', error)
-    );
   }
 
   fichar(): void {

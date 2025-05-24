@@ -7,6 +7,7 @@ import { AdminDashboardComponent } from './features/dashboard/admin-dashboard.co
 import { AuthGuard } from './guards/auth.guard';
 import { RoleGuard } from './guards/role.guard';
 import { RegisterUserComponent } from './features/users/register-user.component';
+import { UpdateRoleComponent } from './features/users/update-role.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [AuthGuard, RoleGuard], data:{expectedRole: 'ADMIN'} },
   { path: 'employee-dashboard', component: EmployeeDashboardComponent, canActivate: [AuthGuard,RoleGuard], data:{expectedRole: 'EMPLOYEE'} },
   { path: 'register-user', component: RegisterUserComponent, canActivate: [AuthGuard, RoleGuard], data:{expectedRole: 'ADMIN'}},
+  { path: 'edit-role', component: UpdateRoleComponent, canActivate: [AuthGuard, RoleGuard], data:{expectedRole: 'ADMIN'}}
   //{ path: '**', redirectTo: 'login' }
 ];
 
