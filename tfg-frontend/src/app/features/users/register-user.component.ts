@@ -1,25 +1,45 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { UserService } from '../../services/user.service';
+import { UserRequestDTO } from '../../models/user.model';
+import { RouterModule } from '@angular/router';
+import { AdminSidebarComponent } from 'src/app/components/admin-sidebar.component';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { RouterModule } from '@angular/router';
 import { RecordService } from '../../services/record.service';
-import { AdminSidebarComponent } from '../../components/admin-sidebar.component';
 
 @Component({
-  selector: 'app-admin-dashboard',
-  templateUrl: './admin-dashboard.component.html',
-  styleUrl: './admin-dashboard.component.css',
-  imports: [
-    RouterModule,AdminSidebarComponent
-  ],
+  selector: 'app-register-user',
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule,AdminSidebarComponent],
+  templateUrl: './register-user.component.html',
+  styleUrls: ['./register-user.component.css']
 })
-export class AdminDashboardComponent implements OnInit{
+export class RegisterUserComponent {
+  user: UserRequestDTO = { name: '', surname: '', email: '', password: '', role: 'EMPLOYEE' };
+  successMessage = '';
+  errorMessage = '';
 
   userId: number | null = null;
   fichajeStatus: string = '';
   checkInDone: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router, private recordService: RecordService) {}
+  constructor(private userService: UserService, private authService: AuthService, private router: Router, private recordService: RecordService) {}
+
+  onSubmit(): void {
+    this.userService.createUser(this.user).subscribe({
+      next: () => {
+        this.successMessage = 'Usuario creado exitosamente.';
+        this.errorMessage = '';
+        this.user = { name: '', surname: '', email: '', password: '', role: 'EMPLOYEE' };
+      },
+      error: () => {
+        this.errorMessage = 'Error al crear el usuario.';
+        this.successMessage = '';
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.userId = this.authService.getUserId();
@@ -52,7 +72,7 @@ export class AdminDashboardComponent implements OnInit{
             sessionStorage.setItem('checkInDone', 'true');
             this.checkInDone = true;
             this.fichajeStatus = 'Check-in registrado correctamente.';
-          },      
+          },  
             error: () => this.fichajeStatus = 'Error al hacer check-in.'
           });
         } else if (!ultimo.checkOut) {
@@ -79,5 +99,4 @@ export class AdminDashboardComponent implements OnInit{
     localStorage.clear();
     this.authService.logout();
   }
-
 }

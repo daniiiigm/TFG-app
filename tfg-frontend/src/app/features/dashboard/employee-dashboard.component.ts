@@ -2,22 +2,29 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { RecordService } from '../../services/record.service';
+import { RouterModule } from '@angular/router';
+import { EmployeeSidebarComponent } from '../../components/employee-sidebar.component';
 
 @Component({
   selector: 'app-employee-dashboard',
   templateUrl: './employee-dashboard.component.html',
-  styleUrl: './employee-dashboard.component.css'
+  styleUrl: './employee-dashboard.component.css',
+  imports: [
+    RouterModule,EmployeeSidebarComponent
+  ],
 })
 export class EmployeeDashboardComponent {
 
   userId: number | null = null;
   fichajeStatus: string = '';
-  checkInDone: boolean | null = false;
+  checkInDone: boolean = false;
   
   constructor(private authService: AuthService, private router: Router, private recordService: RecordService) {}
 
   ngOnInit(): void {
     this.userId = this.authService.getUserId();
+    const saved = sessionStorage.getItem('checkInDone');
+    this.checkInDone = saved === 'true';
   }
 
 
@@ -41,13 +48,21 @@ export class EmployeeDashboardComponent {
         if (!ultimo) {
           // No ha fichado hoy → Check-in
           this.recordService.checkIn(this.userId!).subscribe({
-            next: () => this.checkInDone = true,       
+            next: () => {
+            sessionStorage.setItem('checkInDone', 'true');
+            this.checkInDone = true;
+            this.fichajeStatus = 'Check-in registrado correctamente.';
+          },  
             error: () => this.fichajeStatus = 'Error al hacer check-in.'
           });
         } else if (!ultimo.checkOut) {
           // Tiene check-in sin check-out → Check-out
           this.recordService.checkOut(this.userId!).subscribe({
-            next: () => this.checkInDone = false,
+            next: () => {
+            sessionStorage.setItem('checkInDone', 'false');
+            this.checkInDone = false;
+            this.fichajeStatus = 'Check-out registrado correctamente.';
+          },
             error: () => this.fichajeStatus = 'Error al hacer check-out.'
           });
         } else {

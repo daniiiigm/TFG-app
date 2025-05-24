@@ -5,6 +5,7 @@ import { RecordService } from '../../services/record.service';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { AdminSidebarComponent } from '../../components/admin-sidebar.component';
 
 @Component({
     selector: 'app-users',
@@ -22,7 +23,7 @@ export class UsersComponent implements OnInit {
   pagesArray: number[] = [];
 
   userId: number | null = null;
-  fichajeStatus: string | null = '';
+  fichajeStatus: string = '';
   checkInDone: boolean = false;
 
   constructor(private authService: AuthService, private userService: UserService, private router: Router,private recordService: RecordService) {}
@@ -30,6 +31,8 @@ export class UsersComponent implements OnInit {
   ngOnInit(): void {
     this.loadUsers();
     this.userId = this.authService.getUserId();
+    const saved = sessionStorage.getItem('checkInDone');
+    this.checkInDone = saved === 'true';
   }
 
   loadUsers(): void {
@@ -87,13 +90,21 @@ export class UsersComponent implements OnInit {
         if (!ultimo) {
           // No ha fichado hoy → Check-in
           this.recordService.checkIn(this.userId!).subscribe({
-            next: () => this.checkInDone = true,       
+            next: () => {
+            sessionStorage.setItem('checkInDone', 'true');
+            this.checkInDone = true;
+            this.fichajeStatus = 'Check-in registrado correctamente.';
+          },  
             error: () => this.fichajeStatus = 'Error al hacer check-in.'
           });
         } else if (!ultimo.checkOut) {
           // Tiene check-in sin check-out → Check-out
           this.recordService.checkOut(this.userId!).subscribe({
-            next: () => this.checkInDone = false,
+            next: () => {
+            sessionStorage.setItem('checkInDone', 'false');
+            this.checkInDone = false;
+            this.fichajeStatus = 'Check-out registrado correctamente.';
+          },
             error: () => this.fichajeStatus = 'Error al hacer check-out.'
           });
         } else {
@@ -108,5 +119,9 @@ export class UsersComponent implements OnInit {
   logout(): void {
     localStorage.clear();
     this.authService.logout();
+  }
+
+  verUsuarios(): void{
+    this.router.navigate(['/user']);
   }
 }

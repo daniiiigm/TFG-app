@@ -1,0 +1,10 @@
+<aside class="sidebar">
+    <img routerLink="/emloyee-dashboard" src="assets/logo.png" alt="Logo de la empresa" class="logo-img" />
+    <button class="btn primary" (click)="fichar()">
+      {{ checkInDone ? 'Check-out' : 'Check-in' }}
+    </button>
+    <p *ngIf="fichajeStatus">{{ fichajeStatus }}</p>
+    <a routerLink="/users" class="btn">Modificar mis datos</a>
+    <a routerLink="/users" class="btn">Ver mis registros</a>
+    <a routerLink="/users" class="btn">Justificantes</a>
+  </aside>

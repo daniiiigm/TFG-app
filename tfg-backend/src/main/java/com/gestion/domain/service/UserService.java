@@ -41,7 +41,7 @@ public class UserService implements UserUseCase{
     @Transactional
     @Override
     public User createUser(UserRequestDTO userRequest) {
-        String encodedPassword = PasswordEncoderUtil.encodePassword(userRequest.getPassword());
+        String encodedPassword = PasswordEncoderUtil.encodePassword(userRequest.getName());
         User user = User.builder()
                 .name(userRequest.getName())
                 .surname(userRequest.getSurname())

@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UsersComponent } from './features/users/users.component';
-import { LoginComponent } from './features/login.component';
+import { LoginComponent } from './features/login/login.component';
 import { EmployeeDashboardComponent } from './features/dashboard/employee-dashboard.component';
 import { AdminDashboardComponent } from './features/dashboard/admin-dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
 import { RoleGuard } from './guards/role.guard';
+import { RegisterUserComponent } from './features/users/register-user.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [AuthGuard, RoleGuard], data:{expectedRole: 'ADMIN'} },
   { path: 'employee-dashboard', component: EmployeeDashboardComponent, canActivate: [AuthGuard,RoleGuard], data:{expectedRole: 'EMPLOYEE'} },
+  { path: 'register-user', component: RegisterUserComponent, canActivate: [AuthGuard, RoleGuard], data:{expectedRole: 'ADMIN'}},
   //{ path: '**', redirectTo: 'login' }
 ];
 
