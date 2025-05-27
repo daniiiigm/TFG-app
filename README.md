@@ -1,2 +1,2 @@
-First commits of the backend are in: https://github.com/daniiiigm/TFG
-This is a repository for unifying frontend and backend, because i didn't have one for the frontend.
+Los primeros commits del backend estan en: https://github.com/daniiiigm/TFG
+En este repositorio he unido el frontend y el backend, ya que no disponio de uno para el frontend.
