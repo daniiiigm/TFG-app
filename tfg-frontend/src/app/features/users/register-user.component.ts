@@ -96,7 +96,7 @@ export class RegisterUserComponent {
 
 
   logout(): void {
-    localStorage.clear();
+    sessionStorage.clear();
     this.authService.logout();
   }
 }

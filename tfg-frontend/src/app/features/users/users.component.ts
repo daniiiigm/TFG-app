@@ -26,6 +26,9 @@ export class UsersComponent implements OnInit {
   fichajeStatus: string = '';
   checkInDone: boolean = false;
 
+  editUser: any = {};
+  showEditModal = false;
+
   constructor(private authService: AuthService, private userService: UserService, private router: Router,private recordService: RecordService) {}
 
   ngOnInit(): void {
@@ -117,11 +120,35 @@ export class UsersComponent implements OnInit {
   }
 
   logout(): void {
-    localStorage.clear();
+    sessionStorage.clear();
     this.authService.logout();
   }
 
   verUsuarios(): void{
     this.router.navigate(['/user']);
   }
+
+  openEditModal(user: User): void {
+  this.userId = user.id;
+  this.editUser = { ...user }; // Copia para edición
+  this.showEditModal = true;
+  }
+
+  closeEditModal(): void {
+    this.showEditModal = false;
+    this.editUser = {};
+  }
+
+  submitEdit(): void {
+    if (!this.userId) return;
+
+    this.userService.updateUser(this.userId, this.editUser).subscribe({
+      next: () => {
+        this.loadUsers(); // Refresca lista
+        this.closeEditModal();
+      },
+      error: err => console.error('Error al actualizar usuario', err)
+    });
+  }
+
 }

@@ -12,6 +12,7 @@ export class AdminSidebarComponent {
   @Input() checkInDone: boolean = false;
   @Input() fichajeStatus: string = '';
   @Input() fichar!: () => void;
+  @Input() logout!: () => void;
   
 }
 

@@ -76,7 +76,7 @@ export class AdminDashboardComponent implements OnInit{
 
 
   logout(): void {
-    localStorage.clear();
+    sessionStorage.clear();
     this.authService.logout();
   }
 
