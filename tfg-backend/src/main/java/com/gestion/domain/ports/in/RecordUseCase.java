@@ -9,4 +9,5 @@ public interface RecordUseCase {
     List<Record> getAllRecords();
     Record registerCheckIn(Long userId);
     Record registerCheckOut(Long userId);
+    List<Record> getRecordsByUserId(Long userId);
 }

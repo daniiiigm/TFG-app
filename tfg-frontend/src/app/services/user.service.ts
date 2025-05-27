@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User, UpdateUserDTO, Role } from '../models/user.model';
+import { User, UpdateUserDTO, UserRequestDTO, Role } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class UserService {
     return this.http.get<User>(`${this.apiUrl}/${id}`);
   }
 
-  createUser(user: Partial<User>): Observable<User> {
+  createUser(user: UserRequestDTO): Observable<User> {
     return this.http.post<User>(`${this.apiUrl}/create`, user);
   }
 
@@ -28,9 +28,11 @@ export class UserService {
     return this.http.put<User>(`${this.apiUrl}/update/${id}`, user);
   }
 
-  updateUserRole(id: number, role: Role): Observable<User> {
-    return this.http.put<User>(`${this.apiUrl}/update-rol/${id}`, role);
-  }
+  updateUserRole(userId: number, newRole: 'ADMIN' | 'EMPLOYEE'): Observable<User> {
+  return this.http.put<User>(`${this.apiUrl}/update-rol/${userId}`, newRole, {
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
 
   deleteUser(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);

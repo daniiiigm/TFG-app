@@ -42,6 +42,12 @@ public class RecordRepositoryAdapter implements RecordRepositoryPort {
         return toDomain(savedDAO);
     }
 
+    @Override
+    public List<Record> getRecordsByUserId(Long userId) {
+        List<Record> records = recordRepository.findByUserId(userId).stream().map(this::toDomain).toList();
+        return records;
+    }
+
 
     private Record toDomain(RecordDAO dao){
         return Record.builder()

@@ -24,17 +24,10 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody AuthRequestDTO requestDTO) {
-     /*       String token = userUseCase.login(requestDTO);
 
-            if (token == null){
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-            }
-
-            Map<String, String> response = new HashMap<>();
-            return ResponseEntity.ok(response);*/
         LoginResponseDTO loginResponseDTO = userUseCase.login(requestDTO);
 
-        if (loginResponseDTO.getRole() == null || loginResponseDTO.getToken()==null){
+        if (loginResponseDTO.getRole() == null || loginResponseDTO.getToken()==null || loginResponseDTO.getUserId()==null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 

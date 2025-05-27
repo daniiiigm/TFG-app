@@ -4,10 +4,11 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { FormsModule } from '@angular/forms';
-import { UsersComponent } from './features/users.component';
+import { UsersComponent } from './features/users/users.component';
 import { AppRoutingModule } from './app-routing.module';
-import { LoginComponent } from './features/login.component';
+import { LoginComponent } from './features/login/login.component';
 import { RouterModule } from '@angular/router';
+import { AdminSidebarComponent } from './components/admin-sidebar.component';
 
 @NgModule({
   declarations: [AppComponent, UsersComponent],
@@ -16,7 +17,9 @@ import { RouterModule } from '@angular/router';
             FormsModule, 
             AppRoutingModule, 
             LoginComponent,
-            RouterModule],
+            RouterModule,
+            AdminSidebarComponent
+          ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],

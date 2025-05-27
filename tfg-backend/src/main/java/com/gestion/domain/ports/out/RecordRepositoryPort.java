@@ -11,4 +11,5 @@ public interface RecordRepositoryPort {
     Record registerCheckIn(Record record);
     Optional<Record> findOpenRecordByUserId(Long userId);
     Record registerCheckOut(Record record);
+    List<Record> getRecordsByUserId(Long userId);
 }
