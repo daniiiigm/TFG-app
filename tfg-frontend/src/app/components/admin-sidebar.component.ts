@@ -13,6 +13,5 @@ export class AdminSidebarComponent {
   @Input() fichajeStatus: string = '';
   @Input() fichar!: () => void;
   @Input() logout!: () => void;
-  
 }
 

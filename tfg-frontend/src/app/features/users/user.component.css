@@ -12,6 +12,12 @@ h2 {
     width:175px;
 }
 
+th {
+  background-color: #0d2c55;
+  color: white;
+  font-weight: 600;
+}
+
 .table th,
 .table td {
   text-align: center;
@@ -56,36 +62,6 @@ h2 {
   font-family: 'Segoe UI', sans-serif;
   background-color: #f5f7fa;
   color: #1a1a1a;
-}
-
-.sidebar {
-  background-color: #0d2c55;
-  color: #fff;
-  width: 220px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.sidebar h2 {
-  margin-bottom: 20px;
-  margin-top: 20px;
-}
-
-.btn {
-  padding: 15px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-a.btn {
-  text-decoration: none;
-  display: inline-block; 
-  text-align: center; 
-
 }
 
 .primary {

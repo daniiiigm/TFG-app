@@ -29,10 +29,10 @@ export class UserService {
   }
 
   updateUserRole(userId: number, newRole: 'ADMIN' | 'EMPLOYEE'): Observable<User> {
-  return this.http.put<User>(`${this.apiUrl}/update-rol/${userId}`, newRole, {
-    headers: { 'Content-Type': 'application/json' }
-  });
-}
+    return this.http.put<User>(`${this.apiUrl}/update-rol/${userId}`, newRole, {
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
 
   deleteUser(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);

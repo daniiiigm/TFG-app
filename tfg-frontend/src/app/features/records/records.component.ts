@@ -1,24 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../services/user.service';
-import { User } from '../../models/user.model';
+import { Record } from '../../models/record.model';
 import { RecordService } from '../../services/record.service';
-import { Router } from '@angular/router';
-import { RouterModule } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
-import { AdminSidebarComponent } from '../../components/admin-sidebar.component';
+import { AuthService } from 'src/app/services/auth.service';
+import { Router, RouterModule } from '@angular/router';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
-    selector: 'app-users',
-    templateUrl: './users.component.html',
-    styleUrl: './user.component.css',
-    standalone: false
+  selector: 'app-employee-records',
+  templateUrl: './records.component.html',
+  styleUrl: './records.component.css',
+  standalone: false,
 })
-export class UsersComponent implements OnInit {
-  users: User[] = [];
-  paginatedUsers: User[] = [];
+export class RecordsComponent implements OnInit {
+  role: string | null = null;
+
+  records: Record[] = [];
+  paginatedRecords: Record[] = [];
 
   currentPage = 1;
-  itemsPerPage = 15;
+  itemsPerPage = 13;
   totalPages = 0;
   pagesArray: number[] = [];
 
@@ -26,51 +26,52 @@ export class UsersComponent implements OnInit {
   fichajeStatus: string = '';
   checkInDone: boolean = false;
 
-  editUser: any = {};
-  showEditModal = false;
+  errorMessage: string = '';
 
   constructor(private authService: AuthService, private userService: UserService, private router: Router,private recordService: RecordService) {}
 
   ngOnInit(): void {
-    this.loadUsers();
+    this.role = this.authService.getRole();
     this.userId = this.authService.getUserId();
     const saved = sessionStorage.getItem('checkInDone');
     this.checkInDone = saved === 'true';
+    this.fetchRecords();
   }
 
-  loadUsers(): void {
-    this.userService.getAllUsers().subscribe(
-      data => {
-        this.users = data;
-        this.totalPages = Math.ceil(this.users.length / this.itemsPerPage);
+  fetchRecords(): void {
+    if (!this.userId) {
+      this.errorMessage = 'No se ha encontrado el ID del usuario.';
+      return;
+    }
+
+    this.recordService.getAllRecordsByUser(this.userId).subscribe({
+      next: (data) => {
+        // Ordenar por fecha descendente
+        this.records = data.sort(
+          (a, b) => new Date(b.checkIn).getTime() - new Date(a.checkIn).getTime()
+        );
+
+        this.totalPages = Math.ceil(this.records.length / this.itemsPerPage);
         this.pagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-        this.updatePaginatedUsers();
+        this.updatePaginatedRecords();
       },
-      error => console.error('Error fetching users', error)
-    );
+      error: () => {
+        this.errorMessage = 'Error al obtener los registros.';
+      }
+    });
   }
 
-  updatePaginatedUsers(): void {
+  updatePaginatedRecords(): void {
     const start = (this.currentPage - 1) * this.itemsPerPage;
     const end = start + this.itemsPerPage;
-    this.paginatedUsers = this.users.slice(start, end);
+    this.paginatedRecords = this.records.slice(start, end);
   }
 
   changePage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
-      this.updatePaginatedUsers();
+      this.updatePaginatedRecords();
     }
-  }
-
-  deleteUser(id: number): void {
-    this.userService.deleteUser(id).subscribe(
-      () => {
-        this.loadUsers(); // refresca usuarios y paginación
-        this.currentPage = 1; // opcional: volver a la página 1
-      },
-      error => console.error('Error deleting user', error)
-    );
   }
 
   fichar(): void {
@@ -119,36 +120,9 @@ export class UsersComponent implements OnInit {
     });
   }
 
+
   logout(): void {
     sessionStorage.clear();
     this.authService.logout();
   }
-
-  verUsuarios(): void{
-    this.router.navigate(['/user']);
-  }
-
-  openEditModal(user: User): void {
-  this.userId = user.id;
-  this.editUser = { ...user }; // Copia para edición
-  this.showEditModal = true;
-  }
-
-  closeEditModal(): void {
-    this.showEditModal = false;
-    this.editUser = {};
-  }
-
-  submitEdit(): void {
-    if (!this.userId) return;
-
-    this.userService.updateUser(this.userId, this.editUser).subscribe({
-      next: () => {
-        this.loadUsers(); // Refresca lista
-        this.closeEditModal();
-      },
-      error: err => console.error('Error al actualizar usuario', err)
-    });
-  }
-
 }

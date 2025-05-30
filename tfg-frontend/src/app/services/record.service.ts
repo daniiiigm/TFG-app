@@ -25,7 +25,7 @@ export class RecordService {
     return this.http.patch<Record>(`${this.apiUrl}/check-out/${userId}`, {});
   }
 
-  getRecordsByUser(userId: number): Observable<Record[]> {
+  getAllRecordsByUser(userId: number): Observable<Record[]> {
     return this.http.get<Record[]>(`${this.apiUrl}/all-records/${userId}`);
   }
 

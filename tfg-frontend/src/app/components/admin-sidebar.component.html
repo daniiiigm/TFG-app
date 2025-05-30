@@ -1,11 +1,17 @@
 <aside class="sidebar">
   <img routerLink="/admin-dashboard" src="assets/logo.png" alt="Logo" class="logo-img" />
+  
   <button class="btn primary" (click)="fichar()">
     {{ checkInDone ? 'Check-out' : 'Check-in' }}
   </button>
+
   <a routerLink="/users" class="btn">Ver Empleados</a>
+
   <a routerLink="/register-user" class="btn">Registrar Empleado</a>
+
   <a routerLink="/edit-role" class="btn">Modificar rol</a>
+
+  <a routerLink="/records" class="btn">Ver mis registros</a>
 
   <a routerLink="/users" class="btn">Justificantes</a>
 
