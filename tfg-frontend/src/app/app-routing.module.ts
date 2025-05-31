@@ -9,6 +9,7 @@ import { RoleGuard } from './guards/role.guard';
 import { RegisterUserComponent } from './features/users/register-user.component';
 import { UpdateRoleComponent } from './features/users/update-role.component';
 import { RecordsComponent } from './features/records/records.component';
+import { UpdateProfileComponent } from './features/users/update-profile.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -18,7 +19,8 @@ const routes: Routes = [
   { path: 'register-user', component: RegisterUserComponent, canActivate: [AuthGuard, RoleGuard], data:{expectedRole: 'ADMIN'}},
   { path: 'edit-role', component: UpdateRoleComponent, canActivate: [AuthGuard, RoleGuard], data:{expectedRole: 'ADMIN'}},
   { path: 'employee-dashboard', component: EmployeeDashboardComponent, canActivate: [AuthGuard,RoleGuard], data:{expectedRole: 'EMPLOYEE'} },
-  { path: 'records', component: RecordsComponent, canActivate: [AuthGuard] }
+  { path: 'records', component: RecordsComponent, canActivate: [AuthGuard] },
+  { path: 'profile-update', component: UpdateProfileComponent, canActivate: [AuthGuard] }
   //{ path: '**', redirectTo: 'login' }
 ];
 

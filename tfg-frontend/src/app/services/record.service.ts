@@ -29,5 +29,9 @@ export class RecordService {
     return this.http.get<Record[]>(`${this.apiUrl}/all-records/${userId}`);
   }
 
+  updateRecord(id: number, recordDTO: { checkIn: Date, checkOut: Date | null }): Observable<any> {
+    return this.http.put(`${this.apiUrl}/update/${id}`, recordDTO);
+  }
+
 
 }

@@ -40,7 +40,7 @@
             <td>{{ record.checkIn | date: 'HH:mm' }}</td>
             <td>{{ record.checkOut ? (record.checkOut | date: 'HH:mm') : '—' }}</td>
             <td id="acciones" class="text-center">
-              <button id="botonModificar" class="btn btn-sm btn-outline-primary">Modificar</button>
+            <button id="botonModificar" class="btn btn-sm btn-outline-primary" (click)="openEditModal(record)">Modificar</button>
             </td>
           </tr>
         </tbody>
@@ -60,5 +60,34 @@
         </li>
       </ul>
     </nav>
+
+    <!-- MODAL DE MODIFICACIÓN -->
+  <div class="modal-backdrop" *ngIf="showEditModal">
+    <div class="modal-content-custom">
+      <h4 class="mb-3 text-center">Modificar Registro</h4>
+
+      <form (ngSubmit)="submitEdit()">
+        <!-- Check-in -->
+        <div class="mb-3">
+          <label class="form-label">Hora Check-in</label>
+          <input type="time" class="form-control"
+                [(ngModel)]="editCheckInTime" name="checkInTime" required>
+        </div>
+
+        <!-- Check-out -->
+        <div class="mb-3">
+          <label class="form-label">Hora Check-out</label>
+          <input type="time" class="form-control"
+                [(ngModel)]="editCheckOutTime" name="checkOutTime">
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <button type="submit" class="btn btn-primary">Guardar</button>
+          <button type="button" class="btn btn-secondary" (click)="closeEditModal()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   </main>
 </div>

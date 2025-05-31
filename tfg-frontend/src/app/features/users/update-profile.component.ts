@@ -1,74 +1,78 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../services/user.service';
-import { User } from '../../models/user.model';
-import { RecordService } from '../../services/record.service';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { RecordService } from 'src/app/services/record.service';
+import { UserService } from 'src/app/services/user.service';
+import { User } from 'src/app/models/user.model';
 
 @Component({
-    selector: 'app-users',
-    templateUrl: './users.component.html',
-    styleUrl: './user.component.css',
-    standalone: false
+  selector: 'app-update-profile',
+  templateUrl: './update-profile.component.html',
+  styleUrls: ['./update-profile.component.css'],
+  standalone: false
 })
-export class UsersComponent implements OnInit {
-  users: User[] = [];
-  paginatedUsers: User[] = [];
+export class UpdateProfileComponent implements OnInit {
+  role: string | null = null;
 
-  currentPage = 1;
-  itemsPerPage = 15;
-  totalPages = 0;
-  pagesArray: number[] = [];
+  showPassword: boolean = false;
 
   userId: number | null = null;
   fichajeStatus: string = '';
   checkInDone: boolean = false;
 
-  editUser: any = {};
-  showEditModal = false;
+  name: string = '';
+  surname: string = '';
+  password: string = '';
+
+  successMessage = '';
+  errorMessage = '';
 
   constructor(private authService: AuthService, private userService: UserService, private router: Router,private recordService: RecordService) {}
 
   ngOnInit(): void {
-    this.loadUsers();
+    this.role = this.authService.getRole();
     this.userId = this.authService.getUserId();
     const saved = sessionStorage.getItem('checkInDone');
     this.checkInDone = saved === 'true';
-  }
 
-  loadUsers(): void {
-    this.userService.getAllUsers().subscribe(
-      data => {
-        this.users = data;
-        this.totalPages = Math.ceil(this.users.length / this.itemsPerPage);
-        this.pagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-        this.updatePaginatedUsers();
-      },
-      error => console.error('Error fetching users', error)
-    );
-  }
-
-  updatePaginatedUsers(): void {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    const end = start + this.itemsPerPage;
-    this.paginatedUsers = this.users.slice(start, end);
-  }
-
-  changePage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.updatePaginatedUsers();
+    if (this.userId) {
+      this.userService.getUserById(this.userId).subscribe({
+        next: (user: User) => {
+          this.name = user.name;
+          this.surname = user.surname;
+          // No cargamos password por seguridad
+        },
+        error: () => {
+          this.errorMessage = 'No se pudieron cargar tus datos.';
+        }
+      });
     }
+
   }
 
-  deleteUser(id: number): void {
-    this.userService.deleteUser(id).subscribe(
-      () => {
-        this.loadUsers(); // refresca usuarios y paginación
-        this.currentPage = 1; // opcional: volver a la página 1
+  updateProfile(): void {
+    if (!this.userId) {
+      this.errorMessage = 'No se encontró el ID del usuario.';
+      return;
+    }
+
+    const body = {
+      name: this.name,
+      surname: this.surname,
+      password: this.password
+    };
+
+    this.userService.selfUpdateUser(this.userId, body).subscribe({
+      next: () => {
+        this.successMessage = 'Datos actualizados correctamente.';
+        this.errorMessage = '';
+        this.password = '';
       },
-      error => console.error('Error deleting user', error)
-    );
+      error: () => {
+        this.errorMessage = 'Error al actualizar los datos.';
+        this.successMessage = '';
+      }
+    });
   }
 
   fichar(): void {
@@ -122,31 +126,7 @@ export class UsersComponent implements OnInit {
     this.authService.logout();
   }
 
-  verUsuarios(): void{
-    this.router.navigate(['/user']);
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
-
-  openEditModal(user: User): void {
-  this.userId = user.id;
-  this.editUser = { ...user }; // Copia para edición
-  this.showEditModal = true;
-  }
-
-  closeEditModal(): void {
-    this.showEditModal = false;
-    this.editUser = {};
-  }
-
-  submitEdit(): void {
-    if (!this.userId) return;
-
-    this.userService.updateUser(this.userId, this.editUser).subscribe({
-      next: () => {
-        this.loadUsers(); // Refresca lista
-        this.closeEditModal();
-      },
-      error: err => console.error('Error al actualizar usuario', err)
-    });
-  }
-
 }

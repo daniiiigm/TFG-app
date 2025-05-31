@@ -11,9 +11,10 @@ import { RouterModule } from '@angular/router';
 import { AdminSidebarComponent } from './components/admin-sidebar.component';
 import { RecordsComponent } from './features/records/records.component';
 import { EmployeeSidebarComponent } from './components/employee-sidebar.component';
+import { UpdateProfileComponent } from './features/users/update-profile.component';
 
 @NgModule({
-  declarations: [AppComponent, UsersComponent, RecordsComponent],
+  declarations: [AppComponent, UsersComponent, RecordsComponent, UpdateProfileComponent],
   imports: [BrowserModule, 
             HttpClientModule, 
             FormsModule, 

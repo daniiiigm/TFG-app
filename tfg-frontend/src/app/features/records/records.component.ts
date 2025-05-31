@@ -4,6 +4,7 @@ import { RecordService } from '../../services/record.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router, RouterModule } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
+import { RecordDTO } from '../../models/record.model';
 
 @Component({
   selector: 'app-employee-records',
@@ -13,6 +14,11 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class RecordsComponent implements OnInit {
   role: string | null = null;
+
+  editCheckInTime: string = '';
+  editCheckOutTime: string = '';
+  private editCheckInDate: string = '';
+  private editCheckOutDate: string = '';
 
   records: Record[] = [];
   paginatedRecords: Record[] = [];
@@ -27,6 +33,9 @@ export class RecordsComponent implements OnInit {
   checkInDone: boolean = false;
 
   errorMessage: string = '';
+
+  showEditModal = false;
+  editRecord: { id: number, checkIn: string, checkOut: string | null } = { id: 0, checkIn: '', checkOut: null };
 
   constructor(private authService: AuthService, private userService: UserService, private router: Router,private recordService: RecordService) {}
 
@@ -124,5 +133,58 @@ export class RecordsComponent implements OnInit {
   logout(): void {
     sessionStorage.clear();
     this.authService.logout();
+  }
+
+  openEditModal(record: Record): void {
+    const checkIn = new Date(record.checkIn);
+    this.editCheckInDate = checkIn.toISOString().split('T')[0];
+    this.editCheckInTime = checkIn.toTimeString().slice(0, 5);
+
+    if (record.checkOut) {
+      const checkOut = new Date(record.checkOut);
+      this.editCheckOutDate = checkOut.toISOString().split('T')[0];
+      this.editCheckOutTime = checkOut.toTimeString().slice(0, 5);
+    } else {
+      this.editCheckOutDate = '';
+      this.editCheckOutTime = '';
+    }
+
+    this.editRecord.id = record.id;
+    this.showEditModal = true;
+  }
+  
+
+  closeEditModal(): void {
+    this.showEditModal = false;
+    this.editRecord = { id: 0, checkIn: '', checkOut: null };
+    this.editCheckInDate = '';
+    this.editCheckOutDate = '';
+    this.editCheckInTime = '';
+    this.editCheckOutTime = '';
+  }
+
+  submitEdit(): void {
+    if (!this.editRecord.id) return;
+
+    const checkIn = new Date(`${this.editCheckInDate}T${this.editCheckInTime}`);
+    const checkOut = this.editCheckOutDate && this.editCheckOutTime
+      ? new Date(`${this.editCheckOutDate}T${this.editCheckOutTime}`)
+      : null;
+
+    const checkInUTC = new Date(checkIn.getTime() - checkIn.getTimezoneOffset() * 60000);
+    const checkOutUTC = checkOut ? new Date(checkOut.getTime() - checkOut.getTimezoneOffset() * 60000) : null;
+
+    const recordDTO = {
+      checkIn: checkInUTC,
+      checkOut: checkOutUTC
+    };
+
+    this.recordService.updateRecord(this.editRecord.id, recordDTO).subscribe({
+      next: () => {
+        this.fetchRecords();
+        this.closeEditModal();
+      },
+      error: err => console.error('Error al actualizar el registro', err)
+    });
   }
 }

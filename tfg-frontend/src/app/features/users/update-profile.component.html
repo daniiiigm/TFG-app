@@ -1,0 +1,60 @@
+<div class="dashboard-container">
+
+  @if (role == 'ADMIN') {
+    <app-admin-sidebar
+      [checkInDone]="checkInDone"
+      [fichajeStatus]="fichajeStatus"
+      [fichar]="fichar.bind(this)"
+      [logout]="logout.bind(this)">
+    </app-admin-sidebar>
+  }
+
+  @if (role == 'EMPLOYEE') {
+    <app-employee-sidebar
+      [checkInDone]="checkInDone"
+      [fichajeStatus]="fichajeStatus"
+      [fichar]="fichar.bind(this)"
+      [logout]="logout.bind(this)">
+    </app-employee-sidebar>
+  }
+
+  <main class="main-content p-4">
+    <div class="container mt-4">
+      <h2 class="text-center mb-4">Modificar mis datos</h2>
+
+      <form (ngSubmit)="updateProfile()" class="update-form">
+        <div class="mb-3">
+          <label for="name" class="form-label">Nombre</label>
+          <input type="text" id="name" class="form-control" [(ngModel)]="name" name="name" required />
+        </div>
+
+        <div class="mb-3">
+          <label for="surname" class="form-label">Apellido(s)</label>
+          <input type="text" id="surname" class="form-control" [(ngModel)]="surname" name="surname" required />
+        </div>
+
+        <div class="mb-3 position-relative">
+          <label for="password" class="form-label">Nueva Contraseña</label>
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            id="password"
+            class="form-control pe-5"
+            [(ngModel)]="password"
+            name="password"
+            required
+          />
+            <button id="eye"
+              type="button" (click)="togglePasswordVisibility()"
+            >
+              {{ showPassword ? '👁️' : '👁️' }}
+            </button>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Actualizar</button>
+
+        <div *ngIf="successMessage" class="alert alert-success mt-3">{{ successMessage }}</div>
+        <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+      </form>
+    </div>
+  </main>
+</div>
