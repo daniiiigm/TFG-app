@@ -12,9 +12,10 @@ import { AdminSidebarComponent } from './components/admin-sidebar.component';
 import { RecordsComponent } from './features/records/records.component';
 import { EmployeeSidebarComponent } from './components/employee-sidebar.component';
 import { UpdateProfileComponent } from './features/users/update-profile.component';
+import { DocumentsComponent } from './features/documents/documents.components';
 
 @NgModule({
-  declarations: [AppComponent, UsersComponent, RecordsComponent, UpdateProfileComponent],
+  declarations: [AppComponent, UsersComponent, RecordsComponent, UpdateProfileComponent, DocumentsComponent],
   imports: [BrowserModule, 
             HttpClientModule, 
             FormsModule, 
@@ -22,7 +23,7 @@ import { UpdateProfileComponent } from './features/users/update-profile.componen
             LoginComponent,
             RouterModule,
             AdminSidebarComponent,
-            EmployeeSidebarComponent
+            EmployeeSidebarComponent,
           ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

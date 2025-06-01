@@ -23,7 +23,7 @@
         </tr>
       </thead>
       <tbody>
-          @for (user of paginatedUsers; track $index) {
+      @for (user of paginatedUsers; track $index) {
         <tr>
           <td>{{ user.name }}</td>
           <td>{{ user.surname }}</td>
@@ -36,7 +36,8 @@
           </td>
           
         <!-- MODAL DE MODIFICACIÓN -->
-          <div *ngIf="showEditModal" class="modal-backdrop">
+        @if (showEditModal) {
+          <div class="modal-backdrop">
             <div class="modal-container">
               <h3>Modificar Usuario</h3>
               <form (ngSubmit)="submitEdit()">
@@ -59,6 +60,7 @@
               </form>
             </div>
           </div>
+        }
         </tr>
       }
       </tbody>
@@ -66,7 +68,8 @@
   </div>
 
   <!-- Paginación -->
-  <nav *ngIf="totalPages > 1" class="d-flex justify-content-center mt-3">
+  @if (totalPages > 1) {
+  <nav class="d-flex justify-content-center mt-3">
     <ul class="pagination">
       <li class="page-item" [class.disabled]="currentPage === 1">
         <button class="page-link" (click)="changePage(currentPage - 1)">Anterior</button>
@@ -81,5 +84,6 @@
       </li>
     </ul>
   </nav>
+  }
   </main>
 </div>

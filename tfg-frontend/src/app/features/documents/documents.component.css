@@ -1,0 +1,207 @@
+h2 {
+  font-weight: bold;
+}
+
+#acciones {
+  width: auto;
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Separación entre botones */
+}
+
+#acciones1{
+    width:300px;
+}
+
+th {
+  background-color: #0d2c55;
+  color: white;
+  font-weight: 600;
+}
+
+.table th,
+.table td {
+  text-align: center;
+  vertical-align: middle;
+  
+}
+
+.table {
+  background-color: #fff;
+}
+
+.pagination .page-link {
+  cursor: pointer;
+}
+
+.table th,
+.table td {
+  padding: 0.07rem 0.9rem;
+  font-size: 0.8rem; 
+}
+
+#botonBorrar {
+  padding: 5px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#botonVer {
+  padding: 5px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#botonSubir {
+  width: 250px;
+  padding: 5px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.upload-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+
+.dashboard-container {
+  display: flex;
+  min-height: 100dvh;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f5f7fa;
+  color: #1a1a1a;
+}
+
+.primary {
+    
+  background-color: #3b82f6;
+  color: #fff;
+  padding: 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+
+}
+
+.btn:not(.primary):not(#botonBorrar):not(#botonVer) {
+  background-color: #f1f5f9;
+  color: #1a1a1a;
+}
+
+.main {
+  flex: 1;
+  padding: 30px;
+}
+
+.header h1 {
+  margin-bottom: 30px;
+  margin-top: 9px;
+}
+
+.cards {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  width: 150px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.charts {
+  display: flex;
+  gap: 20px;
+}
+
+.chart {
+  flex: 1;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.bar-chart {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  height: 150px;
+  align-items: flex-end;
+}
+
+.bar-chart div {
+  width: 20%;
+  background-color: #3b82f6;
+  border-radius: 4px;
+}
+
+.donut {
+  width: 150px;
+  height: 150px;
+  margin: 20px auto;
+  border-radius: 50%;
+  background: conic-gradient(#3b82f6 91%, #e5e7eb 91%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.logo-img {
+  width: 60px;    
+  margin-bottom: 20px;
+  margin-top: 10px;
+  display: block;
+  align-self: center;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.modal-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 400px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+
+
+
+
+
+
