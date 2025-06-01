@@ -9,16 +9,21 @@ import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './features/login/login.component';
 import { RouterModule } from '@angular/router';
 import { AdminSidebarComponent } from './components/admin-sidebar.component';
+import { RecordsComponent } from './features/records/records.component';
+import { EmployeeSidebarComponent } from './components/employee-sidebar.component';
+import { UpdateProfileComponent } from './features/users/update-profile.component';
+import { DocumentsComponent } from './features/documents/documents.components';
 
 @NgModule({
-  declarations: [AppComponent, UsersComponent],
+  declarations: [AppComponent, UsersComponent, RecordsComponent, UpdateProfileComponent, DocumentsComponent],
   imports: [BrowserModule, 
             HttpClientModule, 
             FormsModule, 
             AppRoutingModule, 
             LoginComponent,
             RouterModule,
-            AdminSidebarComponent
+            AdminSidebarComponent,
+            EmployeeSidebarComponent,
           ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

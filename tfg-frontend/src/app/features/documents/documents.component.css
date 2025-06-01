@@ -2,6 +2,17 @@ h2 {
   font-weight: bold;
 }
 
+#acciones {
+  width: auto;
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Separación entre botones */
+}
+
+#acciones1{
+    width:300px;
+}
+
 th {
   background-color: #0d2c55;
   color: white;
@@ -25,8 +36,39 @@ th {
 
 .table th,
 .table td {
-  padding: 0.07rem 0.5rem;
+  padding: 0.07rem 0.9rem;
   font-size: 0.8rem; 
+}
+
+#botonBorrar {
+  padding: 5px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#botonVer {
+  padding: 5px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#botonSubir {
+  width: 250px;
+  padding: 5px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.upload-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
 }
 
 
@@ -48,6 +90,11 @@ th {
   cursor: pointer;
   font-weight: bold;
 
+}
+
+.btn:not(.primary):not(#botonBorrar):not(#botonVer) {
+  background-color: #f1f5f9;
+  color: #1a1a1a;
 }
 
 .main {
@@ -123,21 +170,37 @@ th {
   align-self: center;
 }
 
-.slim-select {
-  padding: 10px 6px;
-  font-size: 13px;
-  height: 21px;
+.modal-backdrop {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
 }
 
-.btn-sm {
-  padding: 6px 12px;
-  font-size: 11px;
+.modal-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 400px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-.alert {
-  max-width: 600px;
-  margin: 20px auto 0;
+.form-group {
+  margin-bottom: 1rem;
 }
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+
+
 
 
 

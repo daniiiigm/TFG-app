@@ -2,10 +2,7 @@ package com.gestion.domain.service;
 
 import com.gestion.application.config.JwtUtil;
 import com.gestion.application.config.PasswordEncoderUtil;
-import com.gestion.application.model.AuthRequestDTO;
-import com.gestion.application.model.LoginResponseDTO;
-import com.gestion.application.model.UpdateUserDTO;
-import com.gestion.application.model.UserRequestDTO;
+import com.gestion.application.model.*;
 import com.gestion.domain.model.User;
 import com.gestion.domain.model.enums.Role;
 import com.gestion.domain.ports.in.UserUseCase;
@@ -93,6 +90,15 @@ public class UserService implements UserUseCase{
         }
 
         return null;
+    }
+
+    @Override
+    public User selfUpdateUser(Long id, SelfUpdateDTO selfUpdateDTO) {
+        User user = getUserById(id);
+        user.setName(selfUpdateDTO.getName());
+        user.setSurname(selfUpdateDTO.getSurname());
+        user.setPassword(PasswordEncoderUtil.encodePassword(selfUpdateDTO.getPassword()));
+        return userRepositoryPort.selfUpdateUser(id,user);
     }
 }
 

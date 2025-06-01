@@ -1,5 +1,6 @@
 package com.gestion.application.controller;
 
+import com.gestion.application.model.SelfUpdateDTO;
 import com.gestion.application.model.UpdateUserDTO;
 import com.gestion.application.model.UserRequestDTO;
 import com.gestion.domain.model.User;
@@ -22,7 +23,7 @@ public class UserController {
 
     private final UserUseCase userUseCase;
 
-    @Operation(summary = "Endpoint to get all Users")
+    @Operation(summary = "Endpoint to get all Users (admin)")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/all")
     public ResponseEntity<List<User>> getAllUsers() {
@@ -43,7 +44,7 @@ public class UserController {
         }
     }
 
-    @Operation(summary = "Endpoint to create a new user")
+    @Operation(summary = "Endpoint to create a new user (admin)")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/create")
     public ResponseEntity<User> createUser(@RequestBody UserRequestDTO userRequest) {
@@ -51,7 +52,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
-    @Operation(summary = "Endpoint to delete a user by id")
+    @Operation(summary = "Endpoint to delete a user by id (admin)")
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable Long id) {
@@ -59,7 +60,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(deletedUser);
     }
 
-    @Operation(summary = "Endpoint to update an existing user")
+    @Operation(summary = "Endpoint to update an existing user (admin)")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/update/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UpdateUserDTO updatedUser) {
@@ -67,11 +68,19 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @Operation(summary = "Endpoint to update the rol of an existing user")
+    @Operation(summary = "Endpoint to update the rol of an existing user (admin)")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/update-rol/{id}")
     public ResponseEntity<User> updateUserRol(@PathVariable Long id, @RequestBody Role role) {
         User user = userUseCase.updateUserRol(id, role);
+        return ResponseEntity.ok(user);
+    }
+
+    @Operation(summary = "Endpoint to update an existing user (employee)")
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/self-update/{id}")
+    public ResponseEntity<User> selfUpdateUser(@PathVariable Long id, @RequestBody SelfUpdateDTO selfUpdateDTO) {
+        User user = userUseCase.selfUpdateUser(id, selfUpdateDTO);
         return ResponseEntity.ok(user);
     }
 

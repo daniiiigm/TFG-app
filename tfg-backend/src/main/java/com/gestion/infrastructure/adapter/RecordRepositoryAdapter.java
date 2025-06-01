@@ -3,6 +3,7 @@ package com.gestion.infrastructure.adapter;
 import com.gestion.domain.model.Record;
 import com.gestion.domain.ports.out.RecordRepositoryPort;
 import com.gestion.infrastructure.persistence.entities.RecordDAO;
+import com.gestion.infrastructure.persistence.entities.UserDAO;
 import com.gestion.infrastructure.persistence.repositories.RecordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -21,6 +22,9 @@ public class RecordRepositoryAdapter implements RecordRepositoryPort {
     public List<Record> getAllRecords() {
         return recordRepository.findAll().stream().map(this::toDomain).toList();
     }
+
+    @Override
+    public Optional<Record> getUserById(Long id) { return recordRepository.findById(id).map(this::toDomain); }
 
     @Override
     public Record registerCheckIn(Record record) {
@@ -46,6 +50,13 @@ public class RecordRepositoryAdapter implements RecordRepositoryPort {
     public List<Record> getRecordsByUserId(Long userId) {
         List<Record> records = recordRepository.findByUserId(userId).stream().map(this::toDomain).toList();
         return records;
+    }
+
+    @Override
+    public Record updateRecord(Long id, Record record) {
+        RecordDAO recordDAO = toEntity(record);
+        RecordDAO updatedDAO = recordRepository.save(recordDAO);
+        return toDomain(updatedDAO);
     }
 
 

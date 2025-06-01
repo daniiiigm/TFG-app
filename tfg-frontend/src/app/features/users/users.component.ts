@@ -3,9 +3,7 @@ import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
 import { RecordService } from '../../services/record.service';
 import { Router } from '@angular/router';
-import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { AdminSidebarComponent } from '../../components/admin-sidebar.component';
 
 @Component({
     selector: 'app-users',
@@ -79,7 +77,7 @@ export class UsersComponent implements OnInit {
       return;
     }
 
-    this.recordService.getRecordsByUser(this.userId).subscribe({
+    this.recordService.getAllRecordsByUser(this.userId).subscribe({
       next: (records) => {
         const today = new Date().toISOString().split('T')[0];
 

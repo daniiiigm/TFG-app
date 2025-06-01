@@ -6,3 +6,8 @@ export interface Record {
   checkOut: Date;
   user: User;
 }
+
+export interface RecordDTO {
+  checkIn: Date;
+  checkOut: Date;
+}

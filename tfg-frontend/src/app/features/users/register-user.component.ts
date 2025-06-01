@@ -54,7 +54,7 @@ export class RegisterUserComponent {
       return;
     }
 
-    this.recordService.getRecordsByUser(this.userId).subscribe({
+    this.recordService.getAllRecordsByUser(this.userId).subscribe({
       next: (records) => {
         const today = new Date().toISOString().split('T')[0];
 

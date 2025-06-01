@@ -1,5 +1,6 @@
 package com.gestion.domain.service;
 
+import com.gestion.application.model.RecordDTO;
 import com.gestion.domain.model.Record;
 import com.gestion.domain.model.User;
 import com.gestion.domain.ports.in.RecordUseCase;
@@ -21,6 +22,12 @@ public class RecordService implements RecordUseCase {
     @Override
     public List<Record> getAllRecords() {
         return recordRepositoryPort.getAllRecords();
+    }
+
+    @Override
+    public Record getRecordById(Long id) {
+        return recordRepositoryPort.getUserById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Registro no encontrado con ID: " + id));
     }
 
     @Transactional
@@ -62,5 +69,13 @@ public class RecordService implements RecordUseCase {
     @Override
     public List<Record> getRecordsByUserId(Long userId) {
         return recordRepositoryPort.getRecordsByUserId(userId);
+    }
+
+    @Override
+    public Record updateRecord(Long id, RecordDTO recordDTO) {
+        Record record = getRecordById(id);
+        record.setCheckIn(recordDTO.getCheckIn());
+        record.setCheckOut(recordDTO.getCheckOut());
+        return recordRepositoryPort.updateRecord(id,record);
     }
 }

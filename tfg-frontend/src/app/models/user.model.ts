@@ -30,3 +30,9 @@ export interface AuthRequestDTO {
 export interface Role {
   role: string;
 }
+
+export interface SelfUpdateDTO {
+  name: string;
+  surname: string;
+  password: string;
+}

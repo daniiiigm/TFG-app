@@ -1,75 +1,78 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { UserService } from '../../services/user.service';
-import { User } from '../../models/user.model';
-import { Router, RouterModule } from '@angular/router';
-import { AdminSidebarComponent } from 'src/app/components/admin-sidebar.component';
-import { RecordService } from 'src/app/services/record.service';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { RecordService } from 'src/app/services/record.service';
+import { UserService } from 'src/app/services/user.service';
+import { User } from 'src/app/models/user.model';
 
 @Component({
-  selector: 'app-update-role',
-  standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, AdminSidebarComponent],
-  templateUrl: './update-role.component.html',
-  styleUrls: ['./update-role.component.css']
+  selector: 'app-update-profile',
+  templateUrl: './update-profile.component.html',
+  styleUrls: ['./update-profile.component.css'],
+  standalone: false
 })
-export class UpdateRoleComponent implements OnInit {
-  users: User[] = [];
-  successMessage = '';
-  errorMessage = '';
+export class UpdateProfileComponent implements OnInit {
+  role: string | null = null;
 
-  paginatedUsers: User[] = [];
-
-  currentPage = 1;
-  itemsPerPage = 15;
-  totalPages = 0;
-  pagesArray: number[] = [];
+  showPassword: boolean = false;
 
   userId: number | null = null;
   fichajeStatus: string = '';
   checkInDone: boolean = false;
 
-  constructor(private userService: UserService, private recordService: RecordService, private authService: AuthService, private router: Router) {}
+  name: string = '';
+  surname: string = '';
+  password: string = '';
+
+  successMessage = '';
+  errorMessage = '';
+
+  constructor(private authService: AuthService, private userService: UserService, private router: Router,private recordService: RecordService) {}
 
   ngOnInit(): void {
-    this.loadUsers();
+    this.role = this.authService.getRole();
     this.userId = this.authService.getUserId();
     const saved = sessionStorage.getItem('checkInDone');
     this.checkInDone = saved === 'true';
-  }
 
-  loadUsers(): void {
-    this.userService.getAllUsers().subscribe(
-      data => {
-        this.users = data;
-        this.totalPages = Math.ceil(this.users.length / this.itemsPerPage);
-        this.pagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-        this.updatePaginatedUsers();
-      },
-      error => console.error('Error fetching users', error)
-    );
-  }
-
-  updateRole(userId: number, newRole: string): void {
-    this.userService.updateUserRole(userId, newRole as 'ADMIN' | 'EMPLOYEE').subscribe({
-      next: () => this.successMessage = `Rol actualizado para el usuario ${userId}.`,
-      error: () => this.errorMessage = 'Error al actualizar el rol.'
-    });
-  }
-
-  updatePaginatedUsers(): void {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    const end = start + this.itemsPerPage;
-    this.paginatedUsers = this.users.slice(start, end);
-  }
-
-  changePage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.updatePaginatedUsers();
+    if (this.userId) {
+      this.userService.getUserById(this.userId).subscribe({
+        next: (user: User) => {
+          this.name = user.name;
+          this.surname = user.surname;
+          // No cargamos password por seguridad
+        },
+        error: () => {
+          this.errorMessage = 'No se pudieron cargar tus datos.';
+        }
+      });
     }
+
+  }
+
+  updateProfile(): void {
+    if (!this.userId) {
+      this.errorMessage = 'No se encontró el ID del usuario.';
+      return;
+    }
+
+    const body = {
+      name: this.name,
+      surname: this.surname,
+      password: this.password
+    };
+
+    this.userService.selfUpdateUser(this.userId, body).subscribe({
+      next: () => {
+        this.successMessage = 'Datos actualizados correctamente.';
+        this.errorMessage = '';
+        this.password = '';
+      },
+      error: () => {
+        this.errorMessage = 'Error al actualizar los datos.';
+        this.successMessage = '';
+      }
+    });
   }
 
   fichar(): void {
@@ -123,7 +126,7 @@ export class UpdateRoleComponent implements OnInit {
     this.authService.logout();
   }
 
-  verUsuarios(): void{
-    this.router.navigate(['/user']);
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 }

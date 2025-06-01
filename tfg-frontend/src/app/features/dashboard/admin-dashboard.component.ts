@@ -23,8 +23,24 @@ export class AdminDashboardComponent implements OnInit{
 
   ngOnInit(): void {
     this.userId = this.authService.getUserId();
-    const saved = sessionStorage.getItem('checkInDone');
-    this.checkInDone = saved === 'true';
+    if (this.userId) {
+      this.recordService.getAllRecordsByUser(this.userId).subscribe({
+        next: (records) => {
+          const today = new Date().toISOString().split('T')[0];
+          const recordsToday = records.filter(r => {
+            const checkInDate = new Date(r.checkIn).toISOString().split('T')[0];
+            return checkInDate === today;
+          });
+
+          const ultimo = recordsToday[recordsToday.length - 1];
+          this.checkInDone = !!(ultimo && !ultimo.checkOut);
+          sessionStorage.setItem('checkInDone', this.checkInDone.toString());
+        },
+        error: () => {
+          console.error('No se pudieron cargar los registros del usuario.');
+        }
+      });
+    }
   }
 
 
@@ -34,7 +50,7 @@ export class AdminDashboardComponent implements OnInit{
       return;
     }
 
-    this.recordService.getRecordsByUser(this.userId).subscribe({
+    this.recordService.getAllRecordsByUser(this.userId).subscribe({
       next: (records) => {
         const today = new Date().toISOString().split('T')[0];
 

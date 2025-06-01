@@ -57,6 +57,13 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
         return userRepository.findByEmail(email).map(this::toDomain);
     }
 
+    @Override
+    public User selfUpdateUser(Long id, User user) {
+        UserDAO userDAO = toEntity(user);
+        UserDAO updatedDAO = userRepository.save(userDAO);
+        return toDomain(updatedDAO);
+    }
+
 
     public User toDomain(UserDAO dao){
         return User.builder()

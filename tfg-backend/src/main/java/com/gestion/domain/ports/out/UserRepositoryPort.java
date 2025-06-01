@@ -14,4 +14,5 @@ public interface UserRepositoryPort {
     User updateUser(Long id, User user);
     User updateUserRol(Long id, User user);
     Optional<User> findByEmail(String email);
+    User selfUpdateUser(Long id, User user);
 }
