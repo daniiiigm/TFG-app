@@ -1,6 +1,10 @@
 package com.gestion.domain.service;
 
-import com.gestion.application.model.RecordDTO;
+import com.gestion.application.model.UpdateRecordDTO;
+import com.gestion.domain.exceptions.CheckInAlreadyDoneException;
+import com.gestion.domain.exceptions.CheckOutAlreadyDoneException;
+import com.gestion.domain.exceptions.RecordNotFoundException;
+import com.gestion.domain.exceptions.UserNotFoundException;
 import com.gestion.domain.model.Record;
 import com.gestion.domain.model.User;
 import com.gestion.domain.ports.in.RecordUseCase;
@@ -27,18 +31,18 @@ public class RecordService implements RecordUseCase {
     @Override
     public Record getRecordById(Long id) {
         return recordRepositoryPort.getUserById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Registro no encontrado con ID: " + id));
+                .orElseThrow(() -> new RecordNotFoundException(id));
     }
 
     @Transactional
     @Override
     public Record registerCheckIn(Long userId) {
         User user = userRepositoryPort.getUserById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con ID: " + userId));
+                .orElseThrow(() -> new UserNotFoundException(userId));
 
         // Verificar si ya existe un registro sin check-out
         recordRepositoryPort.findOpenRecordByUserId(userId).ifPresent(record -> {
-            throw new IllegalStateException("User already has done check-in");
+            throw new CheckInAlreadyDoneException(userId);
         });
 
         Record newRecord = Record.builder()
@@ -53,13 +57,13 @@ public class RecordService implements RecordUseCase {
     @Override
     public Record registerCheckOut(Long userId) {
         User user = userRepositoryPort.getUserById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con ID: " + userId));
+                .orElseThrow(() -> new UserNotFoundException(userId));
 
         Record record = recordRepositoryPort.findOpenRecordByUserId(userId)
-                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con ID: " + userId));
+                .orElseThrow(() -> new RecordNotFoundException("Record not found for user with ID " + userId));
 
         if (record.getCheckOut() != null) {
-            throw new IllegalStateException("Record already has check-out time");
+            throw new CheckOutAlreadyDoneException(userId);
         }
 
         record.setCheckOut(LocalDateTime.now());
@@ -72,10 +76,10 @@ public class RecordService implements RecordUseCase {
     }
 
     @Override
-    public Record updateRecord(Long id, RecordDTO recordDTO) {
+    public Record updateRecord(Long id, UpdateRecordDTO updateRecordDTO) {
         Record record = getRecordById(id);
-        record.setCheckIn(recordDTO.getCheckIn());
-        record.setCheckOut(recordDTO.getCheckOut());
+        record.setCheckIn(updateRecordDTO.getCheckIn());
+        record.setCheckOut(updateRecordDTO.getCheckOut());
         return recordRepositoryPort.updateRecord(id,record);
     }
 }

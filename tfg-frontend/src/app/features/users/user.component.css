@@ -3,13 +3,13 @@ h2 {
 }
 
 #acciones{
-    width:175px;
+    width:270px;
     display: flex;
     justify-content: space-around;
 }
 
 #acciones1{
-    width:175px;
+    width:270px;
 }
 
 th {
@@ -35,7 +35,7 @@ th {
 
 .table th,
 .table td {
-  padding: 0.07rem 0.5rem;
+  padding: 0.07rem 1rem;
   font-size: 0.8rem; 
 }
 
@@ -53,6 +53,22 @@ th {
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
+}
+
+#botonRegistros {
+  color: #000000; /* negro */
+  background-color: transparent;
+  border: none;
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 5px 10px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+#botonRegistros:hover {
+  background-color: black;
+  color: white;
 }
 
 
@@ -76,7 +92,7 @@ th {
 
 }
 
-.btn:not(.primary):not(#botonBorrar):not(#botonModificar) {
+.btn:not(.primary):not(#botonBorrar):not(#botonModificar):not(#botonRegistros) {
   background-color: #f1f5f9;
   color: #1a1a1a;
 }

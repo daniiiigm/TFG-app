@@ -34,7 +34,7 @@
         @for (doc of paginatedDocuments; track $index) {
         <tr>
           <td>{{ doc.name }}</td>
-          <td>{{ doc.loadDate | date: 'short' }}</td>
+          <td>{{ doc.loadDate | date: 'dd/MM/yyyy' }}</td>
           <td id="acciones" class="text-center">
             <button id="botonVer" class="btn btn-sm btn-outline-primary" (click)="abrirDocumento(doc.archive)">Ver</button>
             <button id="botonBorrar" class="btn btn-sm btn-outline-danger" (click)="abrirDocumento(doc.archive)">Eliminar</button>

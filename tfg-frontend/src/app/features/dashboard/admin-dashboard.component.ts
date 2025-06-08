@@ -47,6 +47,7 @@ export class AdminDashboardComponent implements OnInit{
   fichar(): void {
     if (!this.userId) {
       this.fichajeStatus = 'Error: Usuario no identificado.';
+      alert(this.fichajeStatus);
       return;
     }
 
@@ -67,9 +68,13 @@ export class AdminDashboardComponent implements OnInit{
             next: () => {
             sessionStorage.setItem('checkInDone', 'true');
             this.checkInDone = true;
-            this.fichajeStatus = 'Check-in registrado correctamente.';
+            this.fichajeStatus = 'Check-in registrado.';
+            alert(this.fichajeStatus);
           },      
-            error: () => this.fichajeStatus = 'Error al hacer check-in.'
+            error: () => {
+              this.fichajeStatus = 'Error al hacer check-in.'
+              alert(this.fichajeStatus);
+            }
           });
         } else if (!ultimo.checkOut) {
           // Tiene check-in sin check-out → Check-out
@@ -77,16 +82,25 @@ export class AdminDashboardComponent implements OnInit{
             next: () => {
             sessionStorage.setItem('checkInDone', 'false');
             this.checkInDone = false;
-            this.fichajeStatus = 'Check-out registrado correctamente.';
+            this.fichajeStatus = 'Check-out registrado.';
+            alert(this.fichajeStatus);
           },
-            error: () => this.fichajeStatus = 'Error al hacer check-out.'
+            error: () => {
+              this.fichajeStatus = 'Error al hacer check-out.'
+              alert(this.fichajeStatus);
+            }
           });
         } else {
           // Ya tiene check-in y check-out
-          this.fichajeStatus = 'Ya has fichado entrada y salida hoy.';
+          this.fichajeStatus = 'Ya se ha fichado hoy.';
+          alert(this.fichajeStatus);
         }
       },
-      error: () => this.fichajeStatus = 'No se pudo recuperar tu historial de fichajes.'
+      error: () => {
+        this.fichajeStatus = 'No se pudo recuperar tu historial de fichajes.'
+        alert(this.fichajeStatus);
+      }
+      
     });
   }
 
