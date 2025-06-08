@@ -38,7 +38,7 @@ export class DocumentsComponent implements OnInit {
         this.userId = this.authService.getUserId();
         if (this.userId) {
             this.documentService.getDocumentsByUser(this.userId).subscribe((docs) => {
-            this.documents = docs;
+            this.documents = docs.sort((a, b) => new Date(b.loadDate).getTime() - new Date(a.loadDate).getTime());
             this.totalPages = Math.ceil(this.documents.length / this.itemsPerPage);
             this.pagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
             this.updatePaginatedDocuments();

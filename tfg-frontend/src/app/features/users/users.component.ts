@@ -4,6 +4,7 @@ import { User } from '../../models/user.model';
 import { RecordService } from '../../services/record.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { Record } from 'src/app/models/record.model';
 
 @Component({
     selector: 'app-users',
@@ -26,6 +27,10 @@ export class UsersComponent implements OnInit {
 
   editUser: any = {};
   showEditModal = false;
+
+  selectedUserRecords: Record[] = [];
+  showRecordsModal: boolean = false;
+  selectedUserName: string = '';
 
   constructor(private authService: AuthService, private userService: UserService, private router: Router,private recordService: RecordService) {}
 
@@ -161,6 +166,29 @@ export class UsersComponent implements OnInit {
       },
       error: err => console.error('Error al actualizar usuario', err)
     });
+  }
+
+  openRecordsModal(user: User): void {
+    if (!user.id) return;
+
+    this.selectedUserName = `${user.name} ${user.surname}`;
+    this.recordService.getAllRecordsByUser(user.id).subscribe({
+      next: (records) => {
+        // Ordena de más reciente a más antigua
+        this.selectedUserRecords = records.sort((a, b) => new Date(b.checkIn).getTime() - new Date(a.checkIn).getTime());
+        this.showRecordsModal = true;
+      },
+      error: (err) => {
+        alert('Error al obtener los registros del usuario');
+        console.error(err);
+      }
+    });
+  }
+
+  closeRecordsModal(): void {
+    this.showRecordsModal = false;
+    this.selectedUserRecords = [];
+    this.selectedUserName = '';
   }
 
 }

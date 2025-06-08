@@ -33,7 +33,7 @@
           <td id="acciones" class="text-center">
             <button id="botonBorrar" class="btn btn-sm btn-outline-danger" (click)="deleteUser(user.id)">Eliminar</button>
             <button id="botonModificar" class="btn btn-sm btn-outline-primary" (click)="openEditModal(user)">Modificar</button>
-            <button id="botonRegistros" class="btn btn-sm btn-outline-primary" (click)="openEditModal(user)">Registros</button>
+            <button id="botonRegistros" class="btn btn-sm btn-outline-primary" (click)="openRecordsModal(user)">Registros</button>
           </td>
           
         <!-- MODAL DE MODIFICACIÓN -->
@@ -59,6 +59,35 @@
                   <button class="btn btn-secondary ms-2" (click)="closeEditModal()" type="button">Cancelar</button>
                 </div>
               </form>
+            </div>
+          </div>
+        }
+
+        @if (showRecordsModal) {
+          <div class="modal-backdrop">
+            <div class="modal-container registros">
+              <h3>Registros de {{ selectedUserName }}</h3>
+
+              <table class="table table-sm table-striped mt-3">
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Check-in</th>
+                    <th>Check-out</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let record of selectedUserRecords">
+                    <td>{{ record.checkIn | date: 'dd/MM/yyyy' }}</td>
+                    <td>{{ record.checkIn | date: 'HH:mm' }}</td>
+                    <td>{{ record.checkOut ? (record.checkOut | date: 'HH:mm') : '—' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="text-end mt-3">
+                <button class="btn btn-secondary" (click)="closeRecordsModal()">Cerrar</button>
+              </div>
             </div>
           </div>
         }
