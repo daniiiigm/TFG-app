@@ -4,22 +4,68 @@ import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { RecordService } from '../../services/record.service';
 import { AdminSidebarComponent } from '../../components/admin-sidebar.component';
+import { UserService } from 'src/app/services/user.service';
+import { DocumentService } from 'src/app/services/document.service';
+import { User } from 'src/app/models/user.model';
+import { CommonModule } from '@angular/common';
+import { NgChartsModule } from 'ng2-charts';
+import { ChartData, ChartOptions } from 'chart.js';
 
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.css',
   imports: [
-    RouterModule,AdminSidebarComponent
+    RouterModule,AdminSidebarComponent, CommonModule, NgChartsModule
   ],
 })
 export class AdminDashboardComponent implements OnInit{
 
+  lineChartData: ChartData<'line'> = {
+    labels: [],
+    datasets: [
+      {
+        data: [],
+        label: 'Fichajes por día',
+        fill: true,
+        tension: 0.3,
+        borderColor: '#3b82f6',
+        backgroundColor: 'rgba(59,130,246,0.1)',
+        pointBackgroundColor: '#3b82f6'
+      }
+    ]
+  };
+
+  lineChartOptions: ChartOptions<'line'> = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+      }
+    },
+    scales: {
+      x: {},
+      y: {
+        beginAtZero: true
+      }
+    }
+  };
+
+  lastFiveDays: { fecha: string, fichado: boolean }[] = [];
+
+  admins: User[] = [];
+
+  totalEmployees: number = 0;
+
+  recordsToday: number = 0;
+
+  totalDocuments: number = 0;
+  
   userId: number | null = null;
   fichajeStatus: string = '';
   checkInDone: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router, private recordService: RecordService) {}
+  constructor(private authService: AuthService, private router: Router, private recordService: RecordService, private userService: UserService, private documentService: DocumentService) {}
 
   ngOnInit(): void {
     this.userId = this.authService.getUserId();
@@ -41,6 +87,120 @@ export class AdminDashboardComponent implements OnInit{
         }
       });
     }
+    this.loadTotalEmployees();
+    this.loadTodayRecords();
+    this.loadTotalDocuments();
+    this.loadAdmins();
+    this.loadRecordsLastFiveDays();
+    this.loadRecordsChart();
+  }
+
+  loadRecordsChart(): void {
+    this.recordService.getAllRecords().subscribe(records => {
+      const today = new Date();
+      const last7 = [];
+
+      for (let i = 6; i >= 0; i--) {
+        const day = new Date(today);
+        day.setDate(today.getDate() - i);
+        const dateStr = day.toISOString().split('T')[0];
+
+        const count = records.filter(r =>
+          new Date(r.checkIn).toISOString().split('T')[0] === dateStr
+        ).length;
+
+        last7.push({ date: dateStr, count });
+        this.lineChartData = {
+          labels: last7.map(d => {
+            const [year, month, day] = d.date.split('-');
+            return `${day}-${month}`;
+          }),
+          datasets: [
+            {
+              label: 'Fichajes por día',
+              data: last7.map(d => d.count),
+              fill: true,
+              tension: 0.3,
+              borderColor: '#3b82f6',
+              backgroundColor: 'rgba(59,130,246,0.1)',
+              pointBackgroundColor: '#3b82f6'
+            }
+          ]
+        };
+      }
+    });
+    
+  }
+  
+  loadRecordsLastFiveDays(): void {
+  if (!this.userId) return;
+
+  this.recordService.getAllRecordsByUser(this.userId).subscribe({
+    next: (records) => {
+      const today = new Date();
+      const days = [];
+
+      for (let i = 0; i < 5; i++) {
+        const fecha = new Date(today);
+        fecha.setDate(today.getDate() - i);
+        const fechaISO = fecha.toISOString().split('T')[0];
+
+        const fichado = records.some(r =>
+          new Date(r.checkIn).toISOString().split('T')[0] === fechaISO
+        );
+
+        days.push({ fecha: fechaISO, fichado });
+      }
+
+      this.lastFiveDays = days.reverse(); // Para mostrar desde el más antiguo al más reciente
+      },
+      error: () => {
+        console.error('No se pudieron cargar los registros de los últimos días.');
+      }
+    });
+  }
+
+  loadAdmins(): void {
+    this.userService.getAllUsers().subscribe({
+      next: (users) => {
+        this.admins = users.filter(user => user.role === 'ADMIN');
+      },
+      error: () => {
+        console.error('No se pudieron cargar los administradores.');
+      }
+    });
+  }
+
+  loadTotalDocuments(): void {
+    this.documentService.getAll().subscribe({
+      next: (docs) => {
+        this.totalDocuments = docs.length;
+      },
+      error: () => {
+        console.error('No se pudieron cargar los documentos.');
+      }
+    });
+  }
+
+  loadTotalEmployees(): void {
+    this.userService.getAllUsers().subscribe(users => {
+      this.totalEmployees = users.length;
+    });
+  }
+
+  loadTodayRecords(): void {
+    this.recordService.getAllRecords().subscribe({
+      next: (records) => {
+        const today = new Date().toISOString().split('T')[0];
+        this.recordsToday = records.filter(record => {
+          const checkInDate = new Date(record.checkIn).toISOString().split('T')[0];
+          return checkInDate === today;
+        }).length;
+      },
+      error: () => {
+        console.error('No se pudieron cargar los registros de hoy.');
+      }
+    });
   }
 
 
@@ -70,6 +230,7 @@ export class AdminDashboardComponent implements OnInit{
             this.checkInDone = true;
             this.fichajeStatus = 'Check-in registrado.';
             alert(this.fichajeStatus);
+            this.loadRecordsLastFiveDays();
           },      
             error: () => {
               this.fichajeStatus = 'Error al hacer check-in.'

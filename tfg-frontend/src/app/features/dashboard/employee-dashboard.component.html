@@ -13,27 +13,21 @@
 
     <section class="cards">
       <div class="card">
-        <h3>120</h3>
-        <p>Empleados</p>
-      </div>
-      
-    </section>
-
-    <section class="charts">
-      <div class="chart">
-        <h4>Horas Trabajadas</h4>
-        <div class="bar-chart">
-          <div style="height: 40%"></div>
-          <div style="height: 60%"></div>
-          <div style="height: 70%"></div>
-          <div style="height: 90%"></div>
-        </div>
-      </div>
-      <div class="chart">
-        <h4>Asistencia</h4>
-        <div class="donut">
-          <span>91%</span>
-        </div>
+        <h3>{{ totalDocuments }}</h3>
+        <p>Documentos subidos</p>
+      </div>  
+      <div class="registro-historico">
+        <h2>Asistencia</h2>
+        <ul>
+          @for (day of lastFiveDays; track $index) {
+          <li>
+            <span>{{ day.fecha }}</span>
+            <span class="estado" [ngClass]="day.fichado ? ' ok' : 'fail'">
+              <i class="fas" [ngClass]="day.fichado ? 'fa-check-circle' : 'fa-times-circle'"></i>
+            </span>
+          </li>
+          }
+        </ul>
       </div>
     </section>
   </main>

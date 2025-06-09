@@ -74,6 +74,7 @@ a.btn {
   border-radius: 12px;
   padding: 20px;
   width: 150px;
+  height: 150px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   text-align: center;
 }
@@ -124,5 +125,41 @@ a.btn {
   margin-top: 10px;
   display: block;
   align-self: center;
+}
+
+.registro-historico {
+  margin-left: 50px;
+  margin-top: -40px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  max-width: 400px;
+}
+
+.registro-historico ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.registro-historico li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.estado i {
+  font-size: 1.2rem;
+}
+
+.estado.ok i {
+  color: green;
+}
+
+.estado.fail i {
+  color: red;
 }
 

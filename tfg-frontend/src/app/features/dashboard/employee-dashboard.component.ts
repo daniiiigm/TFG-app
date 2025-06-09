@@ -4,22 +4,29 @@ import { Router } from '@angular/router';
 import { RecordService } from '../../services/record.service';
 import { RouterModule } from '@angular/router';
 import { EmployeeSidebarComponent } from '../../components/employee-sidebar.component';
+import { User } from 'src/app/models/user.model';
+import { DocumentService } from 'src/app/services/document.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-employee-dashboard',
   templateUrl: './employee-dashboard.component.html',
   styleUrl: './employee-dashboard.component.css',
   imports: [
-    RouterModule,EmployeeSidebarComponent
+    RouterModule,EmployeeSidebarComponent,CommonModule
   ],
 })
 export class EmployeeDashboardComponent {
+
+  lastFiveDays: { fecha: string, fichado: boolean }[] = [];
+  
+  totalDocuments: number = 0;
 
   userId: number | null = null;
   fichajeStatus: string = '';
   checkInDone: boolean = false;
   
-  constructor(private authService: AuthService, private router: Router, private recordService: RecordService) {}
+  constructor(private authService: AuthService, private router: Router, private recordService: RecordService, private documentService: DocumentService) {}
 
   ngOnInit(): void {
     this.userId = this.authService.getUserId();
@@ -41,8 +48,49 @@ export class EmployeeDashboardComponent {
         }
       });
     }
+    this.loadTotalDocuments();
+    this.loadRecordsLastFiveDays();
   }
 
+
+  loadRecordsLastFiveDays(): void {
+  if (!this.userId) return;
+
+  this.recordService.getAllRecordsByUser(this.userId).subscribe({
+    next: (records) => {
+      const today = new Date();
+      const days = [];
+
+      for (let i = 0; i < 5; i++) {
+        const fecha = new Date(today);
+        fecha.setDate(today.getDate() - i);
+        const fechaISO = fecha.toISOString().split('T')[0];
+
+        const fichado = records.some(r =>
+          new Date(r.checkIn).toISOString().split('T')[0] === fechaISO
+        );
+
+        days.push({ fecha: fechaISO, fichado });
+      }
+
+      this.lastFiveDays = days.reverse(); // Para mostrar desde el más antiguo al más reciente
+      },
+      error: () => {
+        console.error('No se pudieron cargar los registros de los últimos días.');
+      }
+    });
+  }
+
+  loadTotalDocuments(): void {
+    this.documentService.getAll().subscribe({
+      next: (docs) => {
+        this.totalDocuments = docs.length;
+      },
+      error: () => {
+        console.error('No se pudieron cargar los documentos.');
+      }
+    });
+  }
 
   fichar(): void {
     if (!this.userId) {
@@ -70,6 +118,7 @@ export class EmployeeDashboardComponent {
             this.checkInDone = true;
             this.fichajeStatus = 'Check-in registrado.';
             alert(this.fichajeStatus);
+            this.loadRecordsLastFiveDays();
           },      
             error: () => {
               this.fichajeStatus = 'Error al hacer check-in.'

@@ -15,7 +15,6 @@ import { FormsModule } from '@angular/forms';
 export class LoginComponent implements OnInit{
   backgrounds = [
     'assets/background1.jpg',
-    'assets/background2.jpg',
     'assets/background3.jpg',
     'assets/background4.jpg',
   ];
@@ -28,15 +27,19 @@ export class LoginComponent implements OnInit{
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
+    this.backgrounds.forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
     this.changeBackground();
-    setInterval(() => this.changeBackground(), 10000); // cada 5 segundos
+    setInterval(() => this.changeBackground(), 15000);
   }
 
   changeBackground() {
     document.body.style.backgroundImage = `url(${this.backgrounds[this.index]})`;
     document.body.style.backgroundSize = 'cover';
     document.body.style.backgroundPosition = 'center';
-    document.body.style.transition = 'background-image 1s ease-in-out';
+    document.body.style.transition = 'background-image 2s ease-in-out';
     this.index = (this.index + 1) % this.backgrounds.length;
   }
 
