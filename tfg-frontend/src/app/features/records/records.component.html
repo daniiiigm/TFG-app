@@ -35,7 +35,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let record of paginatedRecords">
+          @for (record of records; track $index) {
+          <tr>
             <td>{{ record.checkIn | date: 'dd/MM/yyyy' }}</td>
             <td>{{ record.checkIn | date: 'HH:mm' }}</td>
             <td>{{ record.checkOut ? (record.checkOut | date: 'HH:mm') : '—' }}</td>
@@ -43,26 +44,32 @@
             <button id="botonModificar" class="btn btn-sm btn-outline-primary" (click)="openEditModal(record)">Modificar</button>
             </td>
           </tr>
+          }
         </tbody>
       </table>
     </div>
 
-    <nav *ngIf="totalPages > 1" class="d-flex justify-content-center mt-3">
+    @if (totalPages > 1) {
+    <nav class="d-flex justify-content-center mt-3">
       <ul class="pagination">
         <li class="page-item" [class.disabled]="currentPage === 1">
           <button class="page-link" (click)="changePage(currentPage - 1)">Anterior</button>
         </li>
-        <li class="page-item" *ngFor="let page of pagesArray" [class.active]="currentPage === page">
+        @for (page of pagesArray; track $index) {
+        <li class="page-item" [class.active]="currentPage === page">
           <button class="page-link" (click)="changePage(page)">{{ page }}</button>
         </li>
+        }
         <li class="page-item" [class.disabled]="currentPage === totalPages">
           <button class="page-link" (click)="changePage(currentPage + 1)">Siguiente</button>
         </li>
       </ul>
     </nav>
+    }
 
     <!-- MODAL DE MODIFICACIÓN -->
-  <div class="modal-backdrop" *ngIf="showEditModal">
+  @if (showEditModal) {
+  <div class="modal-backdrop">
     <div class="modal-content-custom">
       <h4 class="mb-3 text-center">Modificar Registro</h4>
 
@@ -88,6 +95,7 @@
       </form>
     </div>
   </div>
+  }
 
   </main>
 </div>

@@ -1,17 +1,11 @@
 package com.gestion.application.controller;
 
 import com.gestion.domain.model.Document;
-import com.gestion.domain.model.Record;
-import com.gestion.domain.model.User;
 import com.gestion.domain.ports.in.DocumentUseCase;
-import com.gestion.domain.ports.in.UserUseCase;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
