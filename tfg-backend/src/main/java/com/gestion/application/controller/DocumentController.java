@@ -38,7 +38,7 @@ public class DocumentController {
     @Operation(summary = "Endpoint to get a document by id")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Document> getDocumentById(@PathVariable Long id) {
+    public ResponseEntity<Document> getDocument(@PathVariable Long id) {
         try {
             Document document = documentUseCase.getDocumentById(id);
             return ResponseEntity.ok(document);

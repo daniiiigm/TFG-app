@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface RecordRepository extends JpaRepository<RecordDAO, Long> {
     Optional<RecordDAO> findByUserIdAndCheckOutIsNull(Long userId);
     List<RecordDAO> findByUserId(Long userId);
+    Optional<RecordDAO> findTopByUserIdOrderByCheckInDesc(Long userId);
 }

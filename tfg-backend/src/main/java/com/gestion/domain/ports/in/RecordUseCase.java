@@ -12,4 +12,5 @@ public interface RecordUseCase {
     Record registerCheckOut(Long userId);
     List<Record> getRecordsByUserId(Long userId);
     Record updateRecord(Long id, UpdateRecordDTO updateRecordDTO);
+    String notifyInactiveUsers();
 }

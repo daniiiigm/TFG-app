@@ -24,7 +24,7 @@ public class RecordRepositoryAdapter implements RecordRepositoryPort {
     }
 
     @Override
-    public Optional<Record> getUserById(Long id) { return recordRepository.findById(id).map(this::toDomain); }
+    public Optional<Record> getRecordById(Long id) { return recordRepository.findById(id).map(this::toDomain); }
 
     @Override
     public Record registerCheckIn(Record record) {
@@ -57,6 +57,12 @@ public class RecordRepositoryAdapter implements RecordRepositoryPort {
         RecordDAO recordDAO = toEntity(record);
         RecordDAO updatedDAO = recordRepository.save(recordDAO);
         return toDomain(updatedDAO);
+    }
+
+    @Override
+    public Optional<Record> findLastCheckInByUserId(Long userId) {
+        return recordRepository.findTopByUserIdOrderByCheckInDesc(userId)
+                .map(this::toDomain);
     }
 
 

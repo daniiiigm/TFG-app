@@ -7,6 +7,25 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     show-sql: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: noreplygestiondeusuarios@gmail.com
+    password: reud fwos rddw vqqh
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            trust: smtp.gmail.com
+    protocol: smtp
+    default-encoding: UTF-8
+  scheduling:
+    task:
+      scheduling:
+        time-zone: Europe/Madrid
 
 jwt:
   secret: ${JWT_SECRET:3yV3dk8hGZc6j7K1sX8Ql9b0WsVklzRmKStwX3MbU4Q=}

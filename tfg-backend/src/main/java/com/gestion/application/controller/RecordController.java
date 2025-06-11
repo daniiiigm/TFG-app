@@ -68,9 +68,8 @@ public class RecordController {
     @Operation(summary = "Endpoint to update a record")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/update/{id}")
-    public ResponseEntity<Record> UpdateRecord(@PathVariable Long id, @RequestBody UpdateRecordDTO updateRecordDTO) {
+    public ResponseEntity<Record> updateRecord(@PathVariable Long id, @RequestBody UpdateRecordDTO updateRecordDTO) {
         Record record = recordUseCase.updateRecord(id, updateRecordDTO);
         return ResponseEntity.ok(record);
     }
-
 }

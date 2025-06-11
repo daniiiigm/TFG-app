@@ -79,18 +79,6 @@ a.btn {
   text-align: center;
 }
 
-.charts {
-  display: flex;
-  gap: 20px;
-}
-
-.chart {
-  flex: 1;
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
 
 .bar-chart {
   display: flex;
@@ -128,8 +116,8 @@ a.btn {
 }
 
 .registro-historico {
-  margin-left: 50px;
-  margin-top: -40px;
+  margin-top: 30px;
+  margin-left: 20px;
   padding: 20px;
   background-color: #fff;
   border-radius: 12px;
@@ -161,5 +149,51 @@ a.btn {
 
 .estado.fail i {
   color: red;
+}
+
+.charts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.chart {
+  margin-top: 30px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#grafico {
+  max-height: 200px;
+}
+
+.info-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 20px;
+  align-items: flex-start;
+  margin-top: 30px;
+}
+
+.user-card {
+  background-color: #fff;
+  padding: 16px 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  min-width: 400px;       /* ✅ Límite mínimo para mantener legibilidad */
+  display: inline-block;  /* ✅ Permite que solo ocupe lo necesario */
+  white-space: nowrap;    /* ✅ Mantiene todo en una sola línea si cabe */
+}
+
+.user-card h3 {
+  margin-bottom: 10px;
+}
+
+.user-card p {
+  margin: 0;
+  color: #333;
 }
 

@@ -29,9 +29,6 @@ export class AdminDashboardComponent implements OnInit{
         label: 'Fichajes por día',
         fill: true,
         tension: 0.3,
-        borderColor: '#3b82f6',
-        backgroundColor: 'rgba(59,130,246,0.1)',
-        pointBackgroundColor: '#3b82f6'
       }
     ]
   };

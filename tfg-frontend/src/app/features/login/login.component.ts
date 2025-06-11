@@ -13,12 +13,6 @@ import { FormsModule } from '@angular/forms';
   imports: [FormsModule] 
 })
 export class LoginComponent implements OnInit{
-  backgrounds = [
-    'assets/background1.jpg',
-    'assets/background3.jpg',
-    'assets/background4.jpg',
-  ];
-  index = 0;
 
   email = '';
   password = '';
@@ -27,20 +21,10 @@ export class LoginComponent implements OnInit{
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
-    this.backgrounds.forEach(src => {
-      const img = new Image();
-      img.src = src;
-    });
-    this.changeBackground();
-    setInterval(() => this.changeBackground(), 15000);
-  }
-
-  changeBackground() {
-    document.body.style.backgroundImage = `url(${this.backgrounds[this.index]})`;
+    document.body.style.backgroundImage = `src/assets/background1.jpg`;
     document.body.style.backgroundSize = 'cover';
     document.body.style.backgroundPosition = 'center';
     document.body.style.transition = 'background-image 2s ease-in-out';
-    this.index = (this.index + 1) % this.backgrounds.length;
   }
 
   login() {

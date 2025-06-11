@@ -17,12 +17,14 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class RecordService implements RecordUseCase {
     private final RecordRepositoryPort recordRepositoryPort;
     private final UserRepositoryPort userRepositoryPort;
+    private final EmailService emailService;
     @Override
     public List<Record> getAllRecords() {
         return recordRepositoryPort.getAllRecords();
@@ -30,7 +32,7 @@ public class RecordService implements RecordUseCase {
 
     @Override
     public Record getRecordById(Long id) {
-        return recordRepositoryPort.getUserById(id)
+        return recordRepositoryPort.getRecordById(id)
                 .orElseThrow(() -> new RecordNotFoundException(id));
     }
 
@@ -81,5 +83,20 @@ public class RecordService implements RecordUseCase {
         record.setCheckIn(updateRecordDTO.getCheckIn());
         record.setCheckOut(updateRecordDTO.getCheckOut());
         return recordRepositoryPort.updateRecord(id,record);
+    }
+
+    @Override
+    public String notifyInactiveUsers() {
+        List<User> users = userRepositoryPort.getAllUsers();
+        LocalDateTime threeDaysAgo = LocalDateTime.now().minusDays(3);
+
+        for (User user : users) {
+            Optional<Record> lastRecord = recordRepositoryPort.findLastCheckInByUserId(user.getId());
+
+            if (lastRecord.isEmpty() || lastRecord.get().getCheckIn().isBefore(threeDaysAgo)) {
+                emailService.sendInactivityEmail(user.getEmail(), user.getName());
+            }
+        }
+        return null;
     }
 }
