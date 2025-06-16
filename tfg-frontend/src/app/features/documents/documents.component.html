@@ -37,13 +37,30 @@
           <td>{{ doc.loadDate | date: 'dd/MM/yyyy' }}</td>
           <td id="acciones" class="text-center">
             <button id="botonVer" class="btn btn-sm btn-outline-primary" (click)="abrirDocumento(doc.archive)">Ver</button>
-            <button id="botonBorrar" class="btn btn-sm btn-outline-danger" (click)="abrirDocumento(doc.archive)">Eliminar</button>
+            <button id="botonBorrar" class="btn btn-sm btn-outline-danger" (click)="confirmDeleteDocument(doc)">Eliminar</button>
           </td>
         </tr>
         }
       </tbody>
     </table>
   </div>
+
+  <!-- MODAL DE ELIMINACIÓN -->
+  @if (showDeleteConfirmModal) {
+    <div class="modal-backdrop">
+      <div class="modal-container text-center">
+        <div class="mb-3 d-flex justify-content-center">
+          <i class="bi bi-exclamation-triangle-fill text-warning" style="font-size: 3rem;"></i>
+        </div>
+        <h4 class="mb-3">¿Seguro que desea eliminar este documento?</h4>
+        <p class="fw-bold">{{ documentToDelete?.name }}</p>
+        <div class="d-flex justify-content-center gap-2 mt-5">
+          <button class="btn btn-danger" (click)="deleteDocumentConfirmed()">Eliminar</button>
+          <button class="btn btn-secondary" (click)="cancelDeleteDocument()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  }
 
   <!-- Paginación -->
   @if (totalPages > 1) {

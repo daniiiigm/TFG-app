@@ -13,6 +13,9 @@ import { RecordService } from 'src/app/services/record.service';
   standalone: false
 })
 export class DocumentsComponent implements OnInit {
+    documentToDelete: Document | null = null;
+    showDeleteConfirmModal: boolean = false;
+
     role: string | null = null;
     documents: Document[] = [];
     paginatedDocuments: Document[] = [];
@@ -151,14 +154,37 @@ export class DocumentsComponent implements OnInit {
     }
 
     submitUpload(): void {
-        if (this.uploadFile && this.uploadName.trim() && this.userId) {
-            this.documentService.uploadDocument(this.uploadFile, this.uploadName, this.userId).subscribe({
-            next: () => {
-                this.closeUploadModal();
-                this.ngOnInit(); // recarga la lista
-            },
-            error: err => console.error('Error al subir archivo', err)
-            });
-        }
+      if (this.uploadFile && this.uploadName.trim() && this.userId) {
+          this.documentService.uploadDocument(this.uploadFile, this.uploadName, this.userId).subscribe({
+          next: () => {
+              this.closeUploadModal();
+              this.ngOnInit(); // recarga la lista
+          },
+          error: err => console.error('Error al subir archivo', err)
+          });
+      }
+    }
+
+    confirmDeleteDocument(doc: Document): void {
+      this.documentToDelete = doc;
+      this.showDeleteConfirmModal = true;
+    }
+
+    deleteDocumentConfirmed(): void {
+      if (!this.documentToDelete?.id) return;
+
+      this.documentService.deleteDocument(this.documentToDelete.id).subscribe({
+        next: () => {
+          this.showDeleteConfirmModal = false;
+          this.documentToDelete = null;
+          this.ngOnInit(); // recarga lista
+        },
+        error: err => console.error('Error al eliminar documento', err)
+      });
+    }
+
+    cancelDeleteDocument(): void {
+      this.showDeleteConfirmModal = false;
+      this.documentToDelete = null;
     }
 }

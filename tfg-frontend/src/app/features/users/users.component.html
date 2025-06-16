@@ -31,7 +31,7 @@
           <td>{{ user.role }}</td>
           <td>{{ user.creationDate}}</td>
           <td id="acciones" class="text-center">
-            <button id="botonBorrar" class="btn btn-sm btn-outline-danger" (click)="deleteUser(user.id)">Eliminar</button>
+            <button id="botonBorrar" class="btn btn-sm btn-outline-danger" (click)="confirmDeleteUser(user)">Eliminar</button>
             <button id="botonModificar" class="btn btn-sm btn-outline-primary" (click)="openEditModal(user)">Modificar</button>
             <button id="botonRegistros" class="btn btn-sm btn-outline-primary" (click)="openRecordsModal(user)">Registros</button>
           </td>
@@ -59,6 +59,22 @@
                   <button class="btn btn-secondary ms-2" (click)="closeEditModal()" type="button">Cancelar</button>
                 </div>
               </form>
+            </div>
+          </div>
+        }
+
+        <!-- MODAL DE ELIMINACIÓN -->
+        @if (showDeleteConfirmModal) {
+          <div class="modal-backdrop">
+            <div class="modal-container text-center">
+              <div class="mb-3 d-flex justify-content-center">
+                <i class="bi bi-exclamation-triangle-fill text-warning" style="font-size: 3rem;"></i>
+              </div>
+              <h4 class="mb-5 ">¿Seguro que desea eliminar al usuario {{ userToDelete?.name }} {{ userToDelete?.surname }}?</h4>
+              <div class="d-flex justify-content-center gap-2 mt-5">
+                <button class="btn btn-danger" (click)="deleteUserConfirmed()">Eliminar</button>
+                <button class="btn btn-secondary" (click)="closeDeleteConfirmModal()">Cancelar</button>
+              </div>
             </div>
           </div>
         }

@@ -13,6 +13,9 @@ import { Record } from 'src/app/models/record.model';
     standalone: false
 })
 export class UsersComponent implements OnInit {
+  userToDelete: User | null = null;
+  showDeleteConfirmModal: boolean = false;
+
   users: User[] = [];
   paginatedUsers: User[] = [];
 
@@ -66,14 +69,27 @@ export class UsersComponent implements OnInit {
     }
   }
 
-  deleteUser(id: number): void {
-    this.userService.deleteUser(id).subscribe(
-      () => {
-        this.loadUsers(); // refresca usuarios y paginación
-        this.currentPage = 1; // opcional: volver a la página 1
-      },
-      error => console.error('Error deleting user', error)
-    );
+  confirmDeleteUser(user: User): void {
+    this.userToDelete = user;
+    this.showDeleteConfirmModal = true;
+  }
+
+  deleteUserConfirmed(): void {
+  if (!this.userToDelete?.id) return;
+
+  this.userService.deleteUser(this.userToDelete.id).subscribe({
+    next: () => {
+      this.loadUsers();
+      this.currentPage = 1;
+      this.closeDeleteConfirmModal();
+    },
+      error: error => console.error('Error deleting user', error)
+    });
+  }
+
+  closeDeleteConfirmModal(): void {
+    this.userToDelete = null;
+    this.showDeleteConfirmModal = false;
   }
 
   fichar(): void {
