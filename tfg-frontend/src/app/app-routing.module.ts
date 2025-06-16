@@ -23,7 +23,6 @@ const routes: Routes = [
   { path: 'records', component: RecordsComponent, canActivate: [AuthGuard] },
   { path: 'profile-update', component: UpdateProfileComponent, canActivate: [AuthGuard] },
   { path: 'documents', component: DocumentsComponent, canActivate: [AuthGuard] }
-  //{ path: '**', redirectTo: 'login' }
 ];
 
 @NgModule({

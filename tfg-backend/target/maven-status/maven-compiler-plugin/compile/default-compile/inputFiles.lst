@@ -1,34 +1,49 @@
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\application\Application.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\application\config\JwtUtil.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\application\config\SecurityConfig.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\application\config\SpringBootConfiguration.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\application\controller\AuthController.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\application\controller\DocumentController.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\application\controller\RecordController.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\application\controller\UserController.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\application\model\DocumentDTO.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\application\model\RecordDTO.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\application\model\UpdateUserDTO.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\application\model\UserRequestDTO.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\domain\model\Document.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\domain\model\enums\Role.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\domain\model\Record.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\domain\model\User.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\domain\ports\in\DocumentUseCase.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\domain\ports\in\RecordUseCase.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\domain\ports\in\UserUseCase.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\domain\ports\out\DocumentRepositoryPort.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\domain\ports\out\RecordRepositoryPort.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\domain\ports\out\UserRepositoryPort.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\domain\service\DocumentService.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\domain\service\RecordService.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\domain\service\UserService.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\infrastructure\adapter\DocumentRepositoryAdapter.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\infrastructure\adapter\RecordRepositoryAdapter.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\infrastructure\adapter\UserRepositoryAdapter.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\infrastructure\persistence\entities\DocumentDAO.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\infrastructure\persistence\entities\RecordDAO.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\infrastructure\persistence\entities\UserDAO.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\infrastructure\persistence\repositories\DocumentRepository.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\infrastructure\persistence\repositories\RecordRepository.java
-C:\Users\danig\Documents\TFG app\src\main\java\com\gestion\infrastructure\persistence\repositories\UserRepository.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\application\Application.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\application\config\JwtAuthenticationFilter.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\application\config\JwtUtil.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\application\config\PasswordEncoderUtil.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\application\config\SecurityConfig.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\application\config\SpringBootConfiguration.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\application\config\WebConfig.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\application\controller\AuthController.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\application\controller\DocumentController.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\application\controller\RecordController.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\application\controller\TestEmailController.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\application\controller\UserController.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\application\model\AuthRequestDTO.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\application\model\LoginResponseDTO.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\application\model\SelfUpdateDTO.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\application\model\UpdateRecordDTO.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\application\model\UpdateUserDTO.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\application\model\UserRequestDTO.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\domain\exceptions\CheckInAlreadyDoneException.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\domain\exceptions\CheckOutAlreadyDoneException.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\domain\exceptions\DeleteDocumentException.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\domain\exceptions\DocumentNotFoundException.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\domain\exceptions\RecordNotFoundException.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\domain\exceptions\SaveDocumentException.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\domain\exceptions\UserNotFoundException.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\domain\exceptions\WrongPasswordException.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\domain\model\Document.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\domain\model\enums\Role.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\domain\model\Record.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\domain\model\User.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\domain\ports\in\DocumentUseCase.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\domain\ports\in\RecordUseCase.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\domain\ports\in\UserUseCase.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\domain\ports\out\DocumentRepositoryPort.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\domain\ports\out\RecordRepositoryPort.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\domain\ports\out\UserRepositoryPort.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\domain\service\DocumentService.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\domain\service\EmailService.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\domain\service\RecordService.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\domain\service\UserService.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\infrastructure\adapter\DocumentRepositoryAdapter.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\infrastructure\adapter\RecordRepositoryAdapter.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\infrastructure\adapter\UserRepositoryAdapter.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\infrastructure\persistence\entities\DocumentDAO.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\infrastructure\persistence\entities\RecordDAO.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\infrastructure\persistence\entities\UserDAO.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\infrastructure\persistence\repositories\DocumentRepository.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\infrastructure\persistence\repositories\RecordRepository.java
+C:\Users\danig\Documents\TFG-app-unificada\tfg-backend\src\main\java\com\gestion\infrastructure\persistence\repositories\UserRepository.java

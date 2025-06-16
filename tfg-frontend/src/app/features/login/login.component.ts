@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -12,12 +12,20 @@ import { FormsModule } from '@angular/forms';
   
   imports: [FormsModule] 
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
+
   email = '';
   password = '';
   errorMessage = '';
 
   constructor(private authService: AuthService, private router: Router) {}
+
+  ngOnInit() {
+    document.body.style.backgroundImage = `src/assets/background1.jpg`;
+    document.body.style.backgroundSize = 'cover';
+    document.body.style.backgroundPosition = 'center';
+    document.body.style.transition = 'background-image 2s ease-in-out';
+  }
 
   login() {
   this.authService.login(this.email, this.password).subscribe({

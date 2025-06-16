@@ -3,6 +3,8 @@ package com.gestion.domain.service;
 import com.gestion.application.config.JwtUtil;
 import com.gestion.application.config.PasswordEncoderUtil;
 import com.gestion.application.model.*;
+import com.gestion.domain.exceptions.UserNotFoundException;
+import com.gestion.domain.exceptions.WrongPasswordException;
 import com.gestion.domain.model.User;
 import com.gestion.domain.model.enums.Role;
 import com.gestion.domain.ports.in.UserUseCase;
@@ -32,7 +34,7 @@ public class UserService implements UserUseCase{
     public User getUserById(Long id) {
 
         return userRepositoryPort.getUserById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con ID: " + id));
+                .orElseThrow(() -> new UserNotFoundException(id));
     }
 
     @Transactional
@@ -55,7 +57,7 @@ public class UserService implements UserUseCase{
     @Override
     public User deleteUser(Long id) {
         User user = userRepositoryPort.getUserById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException(id));
 
         userRepositoryPort.deleteUser(id);
         return user;
@@ -87,9 +89,10 @@ public class UserService implements UserUseCase{
                 String token = jwtUtil.generateToken(user.getEmail(), user.getRole(), user.getId());
                 return  new LoginResponseDTO(token, user.getRole().name(), user.getId());
             }
+            throw  new WrongPasswordException(user.getId());
         }
 
-        return null;
+        throw new UserNotFoundException("User not found");
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.gestion.domain.ports.in;
 
-import com.gestion.application.model.DocumentRequestDTO;
 import com.gestion.domain.model.Document;
 import org.springframework.web.multipart.MultipartFile;
 

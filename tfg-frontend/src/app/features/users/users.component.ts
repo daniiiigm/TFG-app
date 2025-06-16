@@ -4,6 +4,7 @@ import { User } from '../../models/user.model';
 import { RecordService } from '../../services/record.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { Record } from 'src/app/models/record.model';
 
 @Component({
     selector: 'app-users',
@@ -12,6 +13,9 @@ import { AuthService } from '../../services/auth.service';
     standalone: false
 })
 export class UsersComponent implements OnInit {
+  userToDelete: User | null = null;
+  showDeleteConfirmModal: boolean = false;
+
   users: User[] = [];
   paginatedUsers: User[] = [];
 
@@ -26,6 +30,10 @@ export class UsersComponent implements OnInit {
 
   editUser: any = {};
   showEditModal = false;
+
+  selectedUserRecords: Record[] = [];
+  showRecordsModal: boolean = false;
+  selectedUserName: string = '';
 
   constructor(private authService: AuthService, private userService: UserService, private router: Router,private recordService: RecordService) {}
 
@@ -61,19 +69,33 @@ export class UsersComponent implements OnInit {
     }
   }
 
-  deleteUser(id: number): void {
-    this.userService.deleteUser(id).subscribe(
-      () => {
-        this.loadUsers(); // refresca usuarios y paginación
-        this.currentPage = 1; // opcional: volver a la página 1
-      },
-      error => console.error('Error deleting user', error)
-    );
+  confirmDeleteUser(user: User): void {
+    this.userToDelete = user;
+    this.showDeleteConfirmModal = true;
+  }
+
+  deleteUserConfirmed(): void {
+  if (!this.userToDelete?.id) return;
+
+  this.userService.deleteUser(this.userToDelete.id).subscribe({
+    next: () => {
+      this.loadUsers();
+      this.currentPage = 1;
+      this.closeDeleteConfirmModal();
+    },
+      error: error => console.error('Error deleting user', error)
+    });
+  }
+
+  closeDeleteConfirmModal(): void {
+    this.userToDelete = null;
+    this.showDeleteConfirmModal = false;
   }
 
   fichar(): void {
     if (!this.userId) {
       this.fichajeStatus = 'Error: Usuario no identificado.';
+      alert(this.fichajeStatus);
       return;
     }
 
@@ -94,9 +116,13 @@ export class UsersComponent implements OnInit {
             next: () => {
             sessionStorage.setItem('checkInDone', 'true');
             this.checkInDone = true;
-            this.fichajeStatus = 'Check-in registrado correctamente.';
-          },  
-            error: () => this.fichajeStatus = 'Error al hacer check-in.'
+            this.fichajeStatus = 'Check-in registrado.';
+            alert(this.fichajeStatus);
+          },      
+            error: () => {
+              this.fichajeStatus = 'Error al hacer check-in.'
+              alert(this.fichajeStatus);
+            }
           });
         } else if (!ultimo.checkOut) {
           // Tiene check-in sin check-out → Check-out
@@ -104,16 +130,25 @@ export class UsersComponent implements OnInit {
             next: () => {
             sessionStorage.setItem('checkInDone', 'false');
             this.checkInDone = false;
-            this.fichajeStatus = 'Check-out registrado correctamente.';
+            this.fichajeStatus = 'Check-out registrado.';
+            alert(this.fichajeStatus);
           },
-            error: () => this.fichajeStatus = 'Error al hacer check-out.'
+            error: () => {
+              this.fichajeStatus = 'Error al hacer check-out.'
+              alert(this.fichajeStatus);
+            }
           });
         } else {
           // Ya tiene check-in y check-out
-          this.fichajeStatus = 'Ya has fichado entrada y salida hoy.';
+          this.fichajeStatus = 'Ya se ha fichado hoy.';
+          alert(this.fichajeStatus);
         }
       },
-      error: () => this.fichajeStatus = 'No se pudo recuperar tu historial de fichajes.'
+      error: () => {
+        this.fichajeStatus = 'No se pudo recuperar tu historial de fichajes.'
+        alert(this.fichajeStatus);
+      }
+      
     });
   }
 
@@ -147,6 +182,29 @@ export class UsersComponent implements OnInit {
       },
       error: err => console.error('Error al actualizar usuario', err)
     });
+  }
+
+  openRecordsModal(user: User): void {
+    if (!user.id) return;
+
+    this.selectedUserName = `${user.name} ${user.surname}`;
+    this.recordService.getAllRecordsByUser(user.id).subscribe({
+      next: (records) => {
+        // Ordena de más reciente a más antigua
+        this.selectedUserRecords = records.sort((a, b) => new Date(b.checkIn).getTime() - new Date(a.checkIn).getTime());
+        this.showRecordsModal = true;
+      },
+      error: (err) => {
+        alert('Error al obtener los registros del usuario');
+        console.error(err);
+      }
+    });
+  }
+
+  closeRecordsModal(): void {
+    this.showRecordsModal = false;
+    this.selectedUserRecords = [];
+    this.selectedUserName = '';
   }
 
 }

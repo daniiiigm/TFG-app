@@ -1,8 +1,7 @@
 package com.gestion.application.controller;
 
-import com.gestion.application.model.RecordDTO;
+import com.gestion.application.model.UpdateRecordDTO;
 import com.gestion.domain.model.Record;
-import com.gestion.domain.model.User;
 import com.gestion.domain.ports.in.RecordUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.persistence.EntityNotFoundException;
@@ -69,9 +68,8 @@ public class RecordController {
     @Operation(summary = "Endpoint to update a record")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/update/{id}")
-    public ResponseEntity<Record> UpdateRecord(@PathVariable Long id, @RequestBody RecordDTO recordDTO) {
-        Record record = recordUseCase.updateRecord(id, recordDTO);
+    public ResponseEntity<Record> updateRecord(@PathVariable Long id, @RequestBody UpdateRecordDTO updateRecordDTO) {
+        Record record = recordUseCase.updateRecord(id, updateRecordDTO);
         return ResponseEntity.ok(record);
     }
-
 }

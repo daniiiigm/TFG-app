@@ -26,7 +26,6 @@ public class AuthController {
     public ResponseEntity<LoginResponseDTO> login(@RequestBody AuthRequestDTO requestDTO) {
 
         LoginResponseDTO loginResponseDTO = userUseCase.login(requestDTO);
-
         if (loginResponseDTO.getRole() == null || loginResponseDTO.getToken()==null || loginResponseDTO.getUserId()==null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
